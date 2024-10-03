@@ -28,11 +28,13 @@ def vertex_cover(grafo, subconjunto, mejor_subconjunto, index, aristas, vertices
         vertice_actual = vertices[i]
         nuevo_subconjunto = subconjunto + [vertice_actual]
 
+        print(f"Subconjunto: {nuevo_subconjunto}")
+
         if not contiene_aristas(grafo, nuevo_subconjunto, aristas):
             mejor_subconjunto = vertex_cover(grafo, nuevo_subconjunto, mejor_subconjunto, i + 1, aristas, vertices)
-        else:
-            if len(nuevo_subconjunto) < len(mejor_subconjunto) or not mejor_subconjunto:
-                mejor_subconjunto = nuevo_subconjunto
+            
+        elif len(nuevo_subconjunto) < len(mejor_subconjunto) or not mejor_subconjunto:
+            mejor_subconjunto = nuevo_subconjunto
 
     return mejor_subconjunto
 
