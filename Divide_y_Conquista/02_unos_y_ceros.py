@@ -1,3 +1,4 @@
+
 def obtener_indice(arr, actual):
     if actual == 0:
         if arr[actual] == 0:
