@@ -19,8 +19,11 @@ def contiene_aristas(grafo, subconjunto, aristas):
         aristas_actuales = set([(min(v, w), max(v, w)) for v in subconjunto for w in grafo.adyacentes(v)])
         return aristas == aristas_actuales
 
-
 def vertex_cover(grafo, subconjunto, mejor_subconjunto, index, aristas, vertices):
+
+    if mejor_subconjunto and len(subconjunto) >= len(mejor_subconjunto):
+        return mejor_subconjunto
+
     for i in range(index, len(vertices)):
         vertice_actual = vertices[i]
         nuevo_subconjunto = subconjunto + [vertice_actual]
