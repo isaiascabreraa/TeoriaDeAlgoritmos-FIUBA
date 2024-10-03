@@ -11,26 +11,24 @@ La complejidad algoritmica es del orden de: ...
 
 from lib.grafo import Grafo
 
-def subconjunto_no_adyacente(grafo, n, subconjunto, index, vertices):
+def subconjunto_no_adyacente(grafo, n, subconjunto, mejor_subconjunto, index, vertices):
 
     if len(subconjunto) == n:
         return subconjunto
 
     for i in range(index, len(vertices)):
         vertice_actual = vertices[i]
-        
-        es_adyacente = any(grafo.estan_unidos(vertice_actual, v) for v in subconjunto)
-        
-        if not es_adyacente:
-            subconjunto.append(vertice_actual)
-            resultado = subconjunto_no_adyacente(grafo, n, subconjunto, i + 1, vertices)
-            
-            if resultado:
-                return resultado
-            
-            subconjunto.pop()
 
-    return None
+        es_adyacente = any(grafo.estan_unidos(vertice_actual, v) for v in subconjunto)
+
+        if not es_adyacente:
+            nuevo_subconjunto = subconjunto + [vertice_actual]
+            mejor_subconjunto = subconjunto_no_adyacente(grafo, n, nuevo_subconjunto, mejor_subconjunto, i + 1, vertices)
+
+    if not mejor_subconjunto:
+        return None
+
+    return mejor_subconjunto
 
 def no_adyacentes(grafo, n):
     if not grafo:
@@ -39,8 +37,9 @@ def no_adyacentes(grafo, n):
     vertices = grafo.obtener_vertices()
     print("El subconjunto esperado es: ['A', 'D', 'G', 'J']")
     
-    subconjunto_buscado = subconjunto_no_adyacente(grafo, n, [], 0, vertices)
+    subconjunto_buscado = subconjunto_no_adyacente(grafo, n, [], [], 0, vertices)
     print(f"El subconjunto obtenido es: {subconjunto_buscado}")
+
     return subconjunto_buscado
 
 
@@ -69,9 +68,7 @@ def main():
     '''Dadas las disposiciones del grafo, tiene como maximo 4 vertices adyacentes. 
     Si n > 4 el resultado será None.'''
     n = 4
-
     no_adyacentes(grafo, n)
 
-    
 if __name__ == "__main__":
     main()
