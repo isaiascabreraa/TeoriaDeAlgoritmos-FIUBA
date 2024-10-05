@@ -29,59 +29,33 @@ Al estar ordenados, tengo estos casos:
             En esta caso solo agrego la charla y continuo.
 """
 
-
 def scheduling_con_pesos(charlas):
-
     if len(charlas) == 1:
         return charlas
 
     scheduling = []
     charlas.sort(key=lambda x: x[1])
-
     scheduling.append(charlas[0])
-    prioridad_total = charlas[0][2]
 
-    for i in range (len(charlas)-1):
+    for i in range(1, len(charlas)):
 
-        prioridad_ganada = 0
-        prioridad_perdida = 0
-
-        #No se superponen
-        if charlas[i][1] <= charlas[i+1][0]:
-            scheduling.append(charlas[i+1])
-            prioridad_total += charlas[i+1][2]
-
-        #Se superponen
+        if charlas[i][0] >= scheduling[-1][1]:
+            scheduling.append(charlas[i])
         else:
-            posicion = i
-            horarios_superpuestos = True
-            prioridad_perdida = charlas[i][2]
-            prioridad_ganada = charlas[i+1][2]
+            prioridad_ganada = charlas[i][2]
+            prioridad_perdida = 0
+            posicion_sched = len(scheduling) - 1
 
-            while horarios_superpuestos:
+            while posicion_sched >= 0 and scheduling[posicion_sched][1] > charlas[i][0]:
+                prioridad_perdida += scheduling[posicion_sched][2]
+                posicion_sched -= 1
 
-                if posicion < 0:
-                    break
-
-                if charlas[posicion-1][1] > charlas[i][0]:
-                    prioridad_perdida += charlas[posicion-1][2]
-                    print(f"Prioridad perdida: {prioridad_perdida}")
-                    posicion -= 1
-                    continue
-
-                else:
-                    if prioridad_perdida < prioridad_ganada:
-                        print(f"Prioridad ganada: {prioridad_ganada}")
-                        scheduling = scheduling[:posicion]
-                        scheduling.append(charlas[i+1])
-                        prioridad_total -= prioridad_perdida
-                        prioridad_total += prioridad_ganada
-
-                horarios_superpuestos = False
-
-    print(f"Prioridad total: {prioridad_total}")
+            if prioridad_perdida < prioridad_ganada:
+                scheduling = scheduling[:posicion_sched+1]
+                scheduling.append(charlas[i])
 
     return scheduling
+
 
 
 def scheduling(charlas):
@@ -89,15 +63,29 @@ def scheduling(charlas):
         return []
 
     charlas_programadas = scheduling_con_pesos(charlas)
-    print("Horarios obtenidos:", charlas_programadas)
+    print("Obtenido:", charlas_programadas)
     return charlas_programadas
 
 
 def main():
 
     # Cada tripla es (hora_inicio, hora_fin, prioridad)
-    #charlas = [(1, 4, 10),(3, 5, 70),(0, 6, 20),(5, 7, 60),(3, 8, 75),(5, 9, 4),(6, 10, 50),(8, 11, 90),(8, 12, 30),(2, 13,10),(12, 14,15)]
-    charlas = [(1, 4, 10),(3, 5, 70),(5, 7, 60),(8, 11, 90),(12, 14,15)]
+    #charlas = [(1, 4, 10),(3, 5, 70),(0, 6, 20),(5, 7, 60),(3, 8, 75),(5, 9, 4),(2, 10, 150),(8, 11, 90),(8, 12, 30),(2, 13,10),(12, 14,15)]
+    charlas = [(1, 3, 2), 
+ (2, 5, 3), 
+ (3, 6, 5), 
+ (4, 7, 1), 
+ (5, 9, 4), 
+ (6, 10, 6), 
+ (8, 11, 2), 
+ (10, 12, 8)]
+
+    esperado = [(2, 5, 3), 
+ (6, 10, 6), 
+ (10, 12, 8)]
+
+
+    print(f"Esperado: {esperado}")
 
     scheduling(charlas)
 
