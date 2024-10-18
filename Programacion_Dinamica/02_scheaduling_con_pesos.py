@@ -12,83 +12,60 @@ Resolucion: ...
 La complejidad algoritmica es del orden de: ...
 """
 
-
-"""
-Cuales son mis subproblemas? 
-Me conviene ordenarlos todos por horario de finalizacion.
-Al estar ordenados, tengo estos casos:
-    Caso 0: Sin charlas
-    Caso 1: Una sola charla (esa es la elegida)
-    Caso 2: Dos charlas, se superponen?
-        Si: Entonces me quedo con la que tenga mas valor
-        No: Entonces agrego las dos.
-    Caso 3: Tengo 3 charlas, esta ultima, se superpone?
-        Si: Si se superpone con la ultima entonces veo si se superpone con la anterior a esa, y asi hasta que encuentre una con la que no se
-            superponga. CUando llegue a esa comparo si es mas valiosa esta ultima charla o todas las demas.
-        No: Si no se superpone con la ultima entonces no se superpone con ninguna de las anteriores ya que la anterior no se superpone con las anteriores.
-            En esta caso solo agrego la charla y continuo.
-"""
-
-def scheduling_con_pesos(charlas):
-    if len(charlas) == 1:
-        return charlas
-
-    scheduling = []
-    charlas.sort(key=lambda x: x[1])
-    scheduling.append(charlas[0])
-
-    for i in range(1, len(charlas)):
-
-        if charlas[i][0] >= scheduling[-1][1]:
-            scheduling.append(charlas[i])
+def busqueda_binaria(charlas, start):
+    low, high = 0, len(charlas) - 1
+    while low <= high:
+        mid = (low + high) // 2
+        if charlas[mid][1] <= start:
+            low = mid + 1
         else:
-            prioridad_ganada = charlas[i][2]
-            prioridad_perdida = 0
-            posicion_sched = len(scheduling) - 1
-
-            while posicion_sched >= 0 and scheduling[posicion_sched][1] > charlas[i][0]:
-                prioridad_perdida += scheduling[posicion_sched][2]
-                posicion_sched -= 1
-
-            if prioridad_perdida < prioridad_ganada:
-                scheduling = scheduling[:posicion_sched+1]
-                scheduling.append(charlas[i])
-
-    return scheduling
-
-
+            high = mid - 1
+    return high
 
 def scheduling(charlas):
-    if not charlas:
-        return []
+    
+    charlas.sort(key=lambda x: x[1])
 
-    charlas_programadas = scheduling_con_pesos(charlas)
-    print("Obtenido:", charlas_programadas)
-    return charlas_programadas
+    n = len(charlas)
+    max_ganancias = [0] * (n + 1) 
+    secuencia_charlas = [None] * (n + 1)
+
+    for j in range(1, n + 1):
+       
+        p = busqueda_binaria(charlas, charlas[j - 1][0])
+        if p != -1:
+            ganancia_incluida = charlas[j - 1][2] + max_ganancias[p + 1]
+        else:
+            ganancia_incluida = charlas[j - 1][2] 
+
+        if ganancia_incluida > max_ganancias[j - 1]:
+            max_ganancias[j] = ganancia_incluida
+            secuencia_charlas[j] = j - 1 
+        else:
+            max_ganancias[j] = max_ganancias[j - 1]
+            secuencia_charlas[j] = secuencia_charlas[j - 1]
+
+    resultado = []
+    j = n
+    while j > 0:
+        if secuencia_charlas[j] is not None and (max_ganancias[j] != max_ganancias[j - 1]):
+            resultado.append(charlas[secuencia_charlas[j]])
+            j = busqueda_binaria(charlas, charlas[secuencia_charlas[j]][0]) + 1
+        else:
+            j -= 1
+
+    resultado.reverse()
+    return resultado
+
 
 
 def main():
 
     # Cada tripla es (hora_inicio, hora_fin, prioridad)
-    #charlas = [(1, 4, 10),(3, 5, 70),(0, 6, 20),(5, 7, 60),(3, 8, 75),(5, 9, 4),(2, 10, 150),(8, 11, 90),(8, 12, 30),(2, 13,10),(12, 14,15)]
-    charlas = [(1, 3, 2), 
- (2, 5, 3), 
- (3, 6, 5), 
- (4, 7, 1), 
- (5, 9, 4), 
- (6, 10, 6), 
- (8, 11, 2), 
- (10, 12, 8)]
+    charlas = [(1, 4, 10),(3, 5, 70),(0, 6, 20),(5, 7, 60),(3, 8, 75),(5, 9, 4),(2, 10, 150),(8, 11, 90),(8, 12, 30),(2, 13,10),(12, 14,15)]
 
-    esperado = [(2, 5, 3), 
- (6, 10, 6), 
- (10, 12, 8)]
-
-
-    print(f"Esperado: {esperado}")
-
-    scheduling(charlas)
-
+    charlas_obtenidas = scheduling(charlas)
+    print(f"{charlas_obtenidas}")
 
 if __name__=='__main__':
     main()
