@@ -1,7 +1,6 @@
 
 """
 Problema 08:
-Implementar un algoritmo Greedy que devuelva el cambio pedido, usando la mínima cantidad de monedas/billetes. El algoritmo recibirá un arreglo de valores del sistema monetario, y la cantidad de cambio objetivo a dar, y debe devolver qué monedas/billetes deben ser utilizados para minimizar la cantidad total utilizada. 
 
 Resolucion:
 Nuestra regla Greedy sera:
@@ -13,15 +12,30 @@ La complejidad algoritmica es del orden de:
 
 # cada elemento i de la forma (valor, peso)
 def mochila(elementos, W):
-    return []
+    # Calcula la relación valor/peso para cada elemento
+    elementos = [(valor, peso, valor / peso) for valor, peso in elementos]
+    
+    elementos.sort(key=lambda x: x[2], reverse=True)
+    
+    capacidad_restante = W
+    valor_total = 0
+    elementos_seleccionados = []
+
+    for valor, peso, ratio in elementos:
+        if peso <= capacidad_restante:
+            # Si el peso del elemento no excede la capacidad restante, lo agregamos
+            elementos_seleccionados.append((valor, peso))
+            valor_total += valor
+            capacidad_restante -= peso
+    
+    return elementos_seleccionados, valor_total
 
 def main():
-
-    elementos = [(60, 10),(100, 20),(120, 30),(240, 40),(150, 25),(200, 35)]
+    elementos = [(60, 10), (100, 20), (120, 30), (240, 40), (150, 25), (200, 35)]
     W = 60
-
-    elementos_seleccionados = mochila(elementos, W)
+    elementos_seleccionados, valor_total = mochila(elementos, W)
     print("Elementos seleccionados para la mochila:", elementos_seleccionados)
+    print("Valor total:", valor_total)
 
 if __name__ == "__main__":
     main()
