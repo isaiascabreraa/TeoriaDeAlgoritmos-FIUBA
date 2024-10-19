@@ -1,5 +1,6 @@
 
 """
+Problema 13:
 Un bodegón tiene una única mesa larga con W lugares. Hay una persona en la puerta que anota los grupos que quieren sentarse a comer, y la cantidad de 
 integrantes que conforma a cada uno. Para simplificar su trabajo, se los anota en un vector P donde P[i] contiene la cantidad de personas que integran el 
 grupo i, siendo en total n grupos. Como se trata de un restaurante familiar, las personas sólo se sientan en la mesa si todos los integrantes de su grupo 
@@ -8,6 +9,7 @@ la mesa (o en otras palabras, que dejan la menor cantidad de espacios vacíos).
 """
 
 def resolver_dinamico(P, W):
+
     n = len(P)
     
     #Crea una tabla de n x W
@@ -21,26 +23,11 @@ def resolver_dinamico(P, W):
 
             # Incluye el grupo actual si hay suficiente espacio
             if j >= P[i - 1]:
-
-                #Compara si es mejor incluir el grupo actual en la combinación de espacios ocupados. Si el espacio j puede 
-                # acomodar al grupo i, se queda con el mayor valor entre lo que ya tiene en combinaciones[i][j] y el resultado 
-                # de incluir el grupo, que es el mejor resultado del espacio restante más el peso del grupo actual.
                 combinaciones[i][j] = max(combinaciones[i][j], combinaciones[i - 1][j - P[i - 1]] + P[i - 1])
-
-    #Combinaciones nos dice si es posible, para cada grupo y cada capacidad W, llenar exactamente W espacios usando los grupos 
-    #considerados hasta ese momento.
-
-    print(f"{combinaciones}")
-    
-    # Encuentra el espacio máximo ocupado
-    max_espacios_ocupados = 0
-    for j in range(W, -1, -1):
-        if combinaciones[n][j] > max_espacios_ocupados:
-            max_espacios_ocupados = j
     
     # Reconstruye la solución
     resultado = []
-    j = max_espacios_ocupados
+    j = W
     for i in range(n, 0, -1):
         if combinaciones[i][j] != combinaciones[i - 1][j]:  # Si se incluyó el grupo
             resultado.append(P[i - 1])  # Agrega el grupo a la solución

@@ -1,5 +1,6 @@
 
 """
+Problema 11:
 Dado un número K, se quiere obtener la mínima cantidad de operaciones para llegar desde 0 a K, siendo que las operaciones posibles son:
 (i) aumentar el valor del operando en 1 y (ii) duplicar el valor del operando.
 Implementar un algoritmo que, por programación dinámica obtenga la menor cantidad de operaciones a realizar (y cuáles son dichas operaciones)
@@ -29,6 +30,7 @@ def calcular_operaciones(k):
     
     resultado = []
 
+    # Reconstruye la solución
     while k > 0:
         resultado.append(secuencia_operaciones[k])
         if secuencia_operaciones[k] == 'mas1':
