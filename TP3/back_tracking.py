@@ -77,7 +77,7 @@ def validar_horizontal(tablero, fila, columna, largo, demanda_filas, demanda_col
         if (i + 1) > demanda_filas[columna+i] or 1 > demanda_columnas[columna+i]:
             return False
 
-    cota_derecha = columna + largo
+    cota_derecha = columna + largo - 1
     cota_izquierda = columna
 
     if cota_derecha < m:
@@ -142,7 +142,7 @@ def validar_vertical(tablero, fila, columna, largo, demanda_filas, demanda_colum
         if (i + 1) > demanda_columnas[columna] or 1 > demanda_filas[fila+i]:
             return False
 
-    cota_superior = fila + largo
+    cota_superior = fila + largo - 1
     cota_inferior = fila
 
     if cota_superior < n:
@@ -150,7 +150,7 @@ def validar_vertical(tablero, fila, columna, largo, demanda_filas, demanda_colum
             if tablero[fila + 1][columna - 1] != 0:
                 return False
         
-        if (columna + 1) <= n:
+        if (columna + 1) <= m:
             if tablero[fila + 1][columna + 1] != 0:
                 return False
 
@@ -159,14 +159,15 @@ def validar_vertical(tablero, fila, columna, largo, demanda_filas, demanda_colum
             if tablero[fila - 1][columna - 1] != 0:
                 return False
         
-        if (columna + 1) <= n:
+        if (columna + 1) <= m:
             if tablero[fila - 1][columna + 1] != 0:
                 return False
 
     return True
 
 
-
+#Pre: -
+#Post: -
 def es_valida_colocacion(tablero, fila, columna, largo, orientacion, demanda_filas, demanda_columnas):
 
     if not tablero:
@@ -214,8 +215,8 @@ def backtracking_batalla_naval(tablero_actual, mejor_tablero, demanda_filas, dem
     if not barcos:
         if es_mejor_tablero(tablero_actual, mejor_tablero):
             print("Nuevo mejor tablero encontrado")
-            mejor_tablero[:] = copy.deepcopy(tablero_actual)
-        return
+            return [fila[:] for fila in tablero_actual]  # Copia profunda manual
+        return mejor_tablero
 
     print("Nueva iteración")
     barco = barcos[0]
@@ -231,28 +232,24 @@ def backtracking_batalla_naval(tablero_actual, mejor_tablero, demanda_filas, dem
 
             if es_valida_colocacion(tablero_actual, i, j, barco, 'H', demanda_filas, demanda_columnas):
                 print(f"Colocando barco horizontal en ({i}, {j})")
-                tablero_copia = copy.deepcopy(tablero_actual)
-                demanda_filas_copia = copy.deepcopy(demanda_filas)
-                demanda_columnas_copia = copy.deepcopy(demanda_columnas)
-
-                colocar_barco(tablero_copia, i, j, barco, 'H', 1)
-                imprimir_tablero(tablero_copia)
-                actualizar_demandas(demanda_filas_copia, demanda_columnas_copia, i, j, barco, 'H', 1)
-                backtracking_batalla_naval(tablero_copia, mejor_tablero, demanda_filas_copia, demanda_columnas_copia, barcos[1:])
+                colocar_barco(tablero_actual, i, j, barco, 'H', 1)
+                imprimir_tablero(tablero_actual)
+                actualizar_demandas(demanda_filas, demanda_columnas, i, j, barco, 'H', 1)
+                mejor_tablero = backtracking_batalla_naval(tablero_actual, mejor_tablero, demanda_filas, demanda_columnas, barcos[1:])
+                colocar_barco(tablero_actual, i, j, barco, 'H', 0)  # Revertir colocación
+                actualizar_demandas(demanda_filas, demanda_columnas, i, j, barco, 'H', 0)  # Revertir demandas
 
             if es_valida_colocacion(tablero_actual, i, j, barco, 'V', demanda_filas, demanda_columnas):
                 print(f"Colocando barco vertical en ({i}, {j})")
-                tablero_copia = copy.deepcopy(tablero_actual)
-                demanda_filas_copia = copy.deepcopy(demanda_filas)
-                demanda_columnas_copia = copy.deepcopy(demanda_columnas)
-
-                colocar_barco(tablero_copia, i, j, barco, 'V', 1)
-                imprimir_tablero(tablero_copia)
-                actualizar_demandas(demanda_filas_copia, demanda_columnas_copia, i, j, barco, 'V', 1)
-                backtracking_batalla_naval(tablero_copia, mejor_tablero, demanda_filas_copia, demanda_columnas_copia, barcos[1:])
+                colocar_barco(tablero_actual, i, j, barco, 'V', 1)
+                imprimir_tablero(tablero_actual)
+                actualizar_demandas(demanda_filas, demanda_columnas, i, j, barco, 'V', 1)
+                mejor_tablero = backtracking_batalla_naval(tablero_actual, mejor_tablero, demanda_filas, demanda_columnas, barcos[1:])
+                colocar_barco(tablero_actual, i, j, barco, 'V', 0)  # Revertir colocación
+                actualizar_demandas(demanda_filas, demanda_columnas, i, j, barco, 'V', 0)  # Revertir demandas
 
     print("Fin de la iteración")
-    return
+    return mejor_tablero
 
 #Pre: -
 #Post: -
@@ -264,7 +261,7 @@ def batalla_naval(tablero, demanda_filas, demanda_columnas, barcos):
     mejor_tablero = [[0] * len(tablero[0]) for _ in range(len(tablero))]
     demanda_total = calcular_demanda_total(demanda_filas, demanda_columnas)
 
-    backtracking_batalla_naval(tablero, mejor_tablero, demanda_filas, demanda_columnas, barcos)
+    mejor_tablero = backtracking_batalla_naval(tablero, mejor_tablero, demanda_filas, demanda_columnas, barcos)
     demanda_satisfecha = contar_demandas_satisfechas(mejor_tablero)
 
     print(f"La demanda total es: {demanda_total}")
@@ -311,7 +308,7 @@ def actualizar_demandas(demanda_filas, demanda_columnas, fila, columna, barco, o
 def main():
     #demanda_filas, demanda_columnas, barcos = leer_datos("archivos_prueba/3_3_2.txt")
     demanda_filas, demanda_columnas, barcos = leer_datos("archivos_prueba/5_5_6.txt")
-
+    #demanda_filas, demanda_columnas, barcos = leer_datos("archivos_prueba/8_7_10.txt")
     n = len(demanda_filas)
     m = len(demanda_columnas)
 
