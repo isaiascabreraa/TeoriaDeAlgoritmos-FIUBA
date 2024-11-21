@@ -1,5 +1,4 @@
 
-import copy
 import time
 
 
@@ -127,6 +126,10 @@ def validar_horizontal(tablero, fila, columna, largo, demanda_filas, demanda_col
 #Pre: -
 #Post: -
 def validar_vertical(tablero, fila, columna, largo, demanda_filas, demanda_columnas):
+
+    if largo == 1:
+        return False
+
     n = len(demanda_filas)
     m = len(demanda_columnas)
 
@@ -267,48 +270,54 @@ def actualizar_demandas(demanda_filas, demanda_columnas, fila, columna, barco, o
 #Post: -
 def contar_demandas_satisfechas(demanda_filas, demanda_columnas, demanda_total):
     return demanda_total - sum(demanda_filas + demanda_columnas)
-    
 
 #Pre: -
 #Post: -
 def backtracking_batalla_naval(tablero, mejor_tablero, fila, columna, demanda_filas, demanda_columnas, barcos, mejor_demanda, demanda_total):
-
     if not barcos:
         return mejor_tablero, mejor_demanda
-    #print("Nueva iteración")
+
     barco = barcos[0]
     cantidad_filas = len(demanda_filas)
     cantidad_columnas = len(demanda_columnas)
+    se_pudo_colocar = False
+
+    #demanda_maxima_posible = sum(barcos)*2 + contar_demandas_satisfechas(demanda_filas, demanda_columnas, demanda_total)
+    #if demanda_maxima_posible <= mejor_demanda:
+    #    return mejor_tablero, mejor_demanda
+    
+    
     for i in range(fila, cantidad_filas):
-        for j in range(columna, cantidad_columnas):
-            #print(f"Fila: {i} - Columna: {j}")
+        for j in range(columna if i == fila else 0, cantidad_columnas):
             if demanda_filas[i] == 0 or demanda_columnas[j] == 0:
-                    continue
+                continue
             
             for orientacion in ['H', 'V']:
                 if es_valida_colocacion(tablero, i, j, barco, orientacion, demanda_filas, demanda_columnas):
+                    se_pudo_colocar = True
                     tablero_actual = colocar_barco(tablero, i, j, barco, orientacion)
                     demanda_filas_actual, demanda_columnas_actual = actualizar_demandas(demanda_filas, demanda_columnas, i, j, barco, orientacion)
                     demanda_actual = contar_demandas_satisfechas(demanda_filas_actual, demanda_columnas_actual, demanda_total)
-                    #print(f"Comparando tableros: Actual = {demanda_actual}, Mejor = {mejor_demanda}")
-                    if demanda_actual >= mejor_demanda:
-                        mejor_demanda =  demanda_actual
+                    
+                    if demanda_actual > mejor_demanda:
+                        mejor_demanda = demanda_actual
                         mejor_tablero = tablero_actual
-                        imprimir_tablero(tablero_actual)
-                    #imprimir_tablero(tablero_actual)
 
-                    # Calcular la siguiente posición
-                    siguiente_fila = i
-                    siguiente_columna = j + 1
-                    if siguiente_columna >= cantidad_columnas:
-                        siguiente_fila += 1
-                        siguiente_columna = 0
+                    # Determinar la siguiente posición
+                    next_fila = i
+                    next_columna = j + 1
+                    if next_columna >= cantidad_columnas:
+                        next_fila += 1
+                        next_columna = 0
 
-                    mejor_tablero, mejor_demanda = backtracking_batalla_naval(tablero_actual, mejor_tablero, siguiente_fila, siguiente_columna, demanda_filas_actual, demanda_columnas_actual, barcos[1:], mejor_demanda, demanda_total)
-        
-        columna = 0
-    #fila = 0
-    #print("Fin de la iteración\n")
+                    if len(barcos) > 1 and barco == barcos[1]:
+                        mejor_tablero, mejor_demanda = backtracking_batalla_naval(tablero_actual, mejor_tablero, next_fila, next_columna, demanda_filas_actual, demanda_columnas_actual, barcos[1:], mejor_demanda, demanda_total)
+                    else:
+                        mejor_tablero, mejor_demanda = backtracking_batalla_naval(tablero_actual, mejor_tablero, 0, 0, demanda_filas_actual, demanda_columnas_actual, barcos[1:], mejor_demanda, demanda_total)
+    
+    if not se_pudo_colocar:
+        mejor_tablero, mejor_demanda = backtracking_batalla_naval(tablero, mejor_tablero, 0, 0, demanda_filas, demanda_columnas, barcos[1:], mejor_demanda, demanda_total)
+    
     return mejor_tablero, mejor_demanda
 
 
@@ -379,12 +388,14 @@ def validar_vertical_sin_tablero(fila, columna, largo, demanda_filas, demanda_co
 #Pre: -
 #Post: -
 def main():
-    #demanda_filas, demanda_columnas, barcos = leer_datos("archivos_prueba/3_3_2.txt") #0.0005 segundos
-    #demanda_filas, demanda_columnas, barcos = leer_datos("archivos_prueba/5_5_6.txt") #0.0006 segundos
-    #demanda_filas, demanda_columnas, barcos = leer_datos("archivos_prueba/8_7_10.txt") #31.0737 segundos
-    #demanda_filas, demanda_columnas, barcos = leer_datos("archivos_prueba/10_3_3.txt") #0.0030 segundos
-    demanda_filas, demanda_columnas, barcos = leer_datos("archivos_prueba/10_10_10.txt") #0.0200 segundos PERO LO HACE MAL
-    #demanda_filas, demanda_columnas, barcos = leer_datos("archivos_prueba/20_20_20.txt") #14.0030 segundos PERO LO HACE MAL
+    #demanda_filas, demanda_columnas, barcos = leer_datos("archivos_prueba/3_3_2.txt") #0.0013 segundos [OPTIMO DE: 11 total | 4 satisfecho]
+    #demanda_filas, demanda_columnas, barcos = leer_datos("archivos_prueba/5_5_6.txt") #0.0029 segundos [OPTIMO DE: 18 total | 12 satisfecho]
+    #demanda_filas, demanda_columnas, barcos = leer_datos("archivos_prueba/8_7_10.txt") #0.0737 segundos [OPTIMO DE: 53 total | 26 satisfecho]
+    #demanda_filas, demanda_columnas, barcos = leer_datos("archivos_prueba/10_3_3.txt") #0.0002 segundos [OPTIMO DE: 14 total | 6 satisfecho]
+    #demanda_filas, demanda_columnas, barcos = leer_datos("archivos_prueba/10_10_10.txt") #0.0013 segundos [OPTIMO DE: 40 total | 40 satisfecho]
+    demanda_filas, demanda_columnas, barcos = leer_datos("archivos_prueba/12_12_21.txt") #0.79 segundos [OPTIMO DE: 58 total | 40 satisfecho] MAL deberia ser 46
+    #demanda_filas, demanda_columnas, barcos = leer_datos("archivos_prueba/15_10_15.txt") #105.19 segundos BIEN
+    #demanda_filas, demanda_columnas, barcos = leer_datos("archivos_prueba/20_20_20.txt") #Indeterminado
     
     n = len(demanda_filas)
     m = len(demanda_columnas)
