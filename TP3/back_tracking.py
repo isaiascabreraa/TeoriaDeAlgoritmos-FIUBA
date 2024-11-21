@@ -243,8 +243,8 @@ def backtracking_batalla_naval(tablero, mejor_tablero, fila, columna, demanda_fi
             #print(f"Fila: {i} - Columna: {j}")
             if demanda_filas[i] == 0 or demanda_columnas[j] == 0:
                 continue
-            if barco > cantidad_filas-1-i and barco > cantidad_columnas-1-j:
-                return mejor_tablero, mejor_demanda
+            #if barco > cantidad_filas-1-i and barco > cantidad_columnas-1-j:
+            #    return mejor_tablero, mejor_demanda
 
             ##HORIZONTAL
             if es_valida_colocacion(tablero, i, j, barco, 'H', demanda_filas, demanda_columnas):
@@ -298,14 +298,62 @@ def batalla_naval(tablero, demanda_filas, demanda_columnas, barcos):
     return tablero_obtenido
 
 
+def filtrar_barcos_imposibles(demanda_filas, demanda_columnas, barcos):
+    barcos_posibles = []
+    n = len(demanda_filas)
+    m = len(demanda_columnas)
+
+    for barco in barcos:
+        posible_colocar = False
+        for i in range(n):
+            for j in range(m):
+                if validar_horizontal_sin_tablero(i, j, barco, demanda_filas, demanda_columnas) or \
+                   validar_vertical_sin_tablero(i, j, barco, demanda_filas, demanda_columnas):
+                    posible_colocar = True
+                    break
+            if posible_colocar:
+                break
+        if posible_colocar:
+            barcos_posibles.append(barco)
+
+    return barcos_posibles
+
+def validar_horizontal_sin_tablero(fila, columna, largo, demanda_filas, demanda_columnas):
+    n = len(demanda_filas)
+    m = len(demanda_columnas)
+
+    if columna + largo - 1 >= m:
+        return False
+    if demanda_filas[fila] - largo < 0:
+        return False
+    for i in range(largo):
+        if demanda_columnas[columna + i] - 1 < 0:
+            return False
+    return True
+
+def validar_vertical_sin_tablero(fila, columna, largo, demanda_filas, demanda_columnas):
+    n = len(demanda_filas)
+    m = len(demanda_columnas)
+
+    if fila + largo - 1 >= n:
+        return False
+    if demanda_columnas[columna] - largo < 0:
+        return False
+    for i in range(largo):
+        if demanda_filas[fila + i] - 1 < 0:
+            return False
+    return True
+
+
 #Pre: -
 #Post: -
 def main():
     #demanda_filas, demanda_columnas, barcos = leer_datos("archivos_prueba/3_3_2.txt") #0.0005 segundos
     #demanda_filas, demanda_columnas, barcos = leer_datos("archivos_prueba/5_5_6.txt") #0.0006 segundos
-    #demanda_filas, demanda_columnas, barcos = leer_datos("archivos_prueba/8_7_10.txt") #Indefinido
-    demanda_filas, demanda_columnas, barcos = leer_datos("archivos_prueba/10_10_10.txt") #0.0200 segundos
-    #demanda_filas, demanda_columnas, barcos = leer_datos("archivos_prueba/20_20_20.txt")
+    #demanda_filas, demanda_columnas, barcos = leer_datos("archivos_prueba/8_7_10.txt") #31.0737 segundos
+    #demanda_filas, demanda_columnas, barcos = leer_datos("archivos_prueba/10_3_3.txt") #0.0030 segundos
+    #demanda_filas, demanda_columnas, barcos = leer_datos("archivos_prueba/10_10_10.txt") #0.0200 segundos PERO LO HACE MAL
+    demanda_filas, demanda_columnas, barcos = leer_datos("archivos_prueba/20_20_20.txt") #14.0030 segundos PERO LO HACE MAL
     
     n = len(demanda_filas)
     m = len(demanda_columnas)
@@ -315,27 +363,16 @@ def main():
     imprimir_tablero(tablero)
 
     barcos.sort(reverse=True)
-    barcos_procesados = []
-    for barco in barcos:
-        contador_filas = 0
-        for demanda in demanda_filas:
-            if barco > demanda:
-                contador_filas += 1
-        contador_columnas = 0
-        for demanda in demanda_columnas:
-            if barco > demanda:
-                contador_columnas += 1
-        if contador_columnas == len(demanda_columnas) or contador_filas == len(demanda_filas):
-            continue
-        barcos_procesados.append(barco)
+    barcos_procesados = filtrar_barcos_imposibles(demanda_filas, demanda_columnas, barcos)
+    print(f"Barcos: {barcos_procesados}. Total: {len(barcos_procesados)}")
 
     inicio = time.time()
-    nuevo_tablero = batalla_naval(tablero, demanda_filas, demanda_columnas, barcos_procesados)
+    tablero_obtenido = batalla_naval(tablero, demanda_filas, demanda_columnas, barcos_procesados)
     fin = time.time()
     print(f"Tiempo de ejecución: {fin - inicio:.4f} segundos")
 
     print("Tablero obtenido")
-    imprimir_tablero(nuevo_tablero)
+    imprimir_tablero(tablero_obtenido)
 
 if __name__ == "__main__":
     main()
