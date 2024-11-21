@@ -63,29 +63,38 @@ def validar_horizontal(tablero, fila, columna, largo, demanda_filas, demanda_col
     m = len(demanda_columnas)
 
     if columna + largo - 1 >= m:  #Chequeo si es posible que entre en la matriz.
+        #print("Fallo en valida largo horizontal")
         return False
     if demanda_filas[fila] - largo < 0:
+        #print("Fallo en validar demanda fila horizontal")
         return False
     for i in range(largo):
         if demanda_columnas[columna + i] - 1 < 0:
+            #print("Fallo en validar demanda columna horizontal")
             return False
     
     if columna != 0 and tablero[fila][columna - 1] != 0:  #Chequeo si la posicion anterior no esta ocupada
+        #print("Fallo en validar posicion anterior horizontal")
         return False
     if columna + largo < m and tablero[fila][columna + largo] != 0:  #Chequeo que la posicion siguiente no esta ocupada.
+        #print("Fallo en validar posicion siguiente horizontal")
         return False
     
     for i in range(largo):  #Chequeo que las posiciones por arriba, por debajo y a lo largo no esten ocupadas.
         if fila != 0 and fila < n - 1:
             if tablero[fila - 1][columna + i] != 0 or tablero[fila + 1][columna + i] != 0:
+                #print("Fallo en superiores e inferiores horizontal")
                 return False
         elif fila != 0 and fila == n - 1:
             if tablero[fila - 1][columna + i] != 0:
+                #print("Fallo en superiores e inferiores horizontal")
                 return False
         elif fila == 0 and fila < n - 1:
             if tablero[fila + 1][columna + i] != 0:
+                #print("Fallo en superiores e inferiores horizontal")
                 return False
         if tablero[fila][columna + i] != 0:  #Chequeo que no esten ocupados los lugares internos
+            #print("Fallo en interiores horizontal")
             return False
 
     cota_derecha = columna + largo - 1
@@ -95,18 +104,22 @@ def validar_horizontal(tablero, fila, columna, largo, demanda_filas, demanda_col
     if cota_derecha < m - 1:  # Si existe derecha..
         if fila > 0:  # Si existe un arriba..
             if tablero[fila - 1][columna + largo] != 0:  # Y es distinto de 0..
+                #print("Fallo en diagonales horizontal")
                 return False
         if fila < n - 1:  # Si existe un abajo..
             if tablero[fila + 1][columna + largo] != 0:  # Y es distinto de 0..
+                #print("Fallo en diagonales horizontal")
                 return False
 
     # Verificar la diagonal inferior izquierda
     if cota_izquierda > 0:  # Si existe izquierda..
         if fila - 1 >= 0:  # Si existe un arriba..
             if tablero[fila - 1][columna - 1] != 0:  # Y es distinto de 0..
+                #print("Fallo en diagonales horizontal")
                 return False
         if fila + 1 < n:  # Si existe un abajo..
             if tablero[fila + 1][columna - 1] != 0:  # Y es distinto de 0..
+                #print("Fallo en diagonales horizontal")
                 return False
         
     return True
@@ -118,30 +131,50 @@ def validar_vertical(tablero, fila, columna, largo, demanda_filas, demanda_colum
     m = len(demanda_columnas)
 
     if fila + largo - 1 >= n:  #Chequeo si es posible que entre en la matriz.
+        #print("Fallo en largo vertical")
         return False
     if demanda_columnas[columna] - largo < 0:
+        #print("Fallo en demanda columna vertical")
         return False
     for i in range(largo):
         if demanda_filas[fila + i] - 1 < 0:
+            #print("Fallo en demanda fila vertical")
             return False
     
     if fila != 0 and tablero[fila - 1][columna] != 0:  #Chequeo que la posicion anterior no este ocupada.
+        #print("Fallo en anterior vertical")
         return False
     if fila + largo < n and tablero[fila + largo][columna] != 0:  #Chequeo que la posicion siguiente no esta ocupada.
+        #print("Fallo en siguiente vertical")
         return False
     
     for i in range(largo):  #Chequeo que las posiciones por izquierda, por derecha y a lo largo no esten ocupadas.
+        
+        if tablero[fila + i][columna] != 0:  #Chequeo que no esten ocupados los lugares internos
+            #imprimir_tablero(tablero)
+            #print(f"Quiero poner una elemento vertical en Fila: {fila} - Columna: {columna}, de largo: {largo}")
+            #print("Fallo en interiores vertical")
+            return False
+        
         if columna != 0 and columna < m - 1:
             if tablero[fila + i][columna - 1] != 0 or tablero[fila + i][columna + 1] != 0:
+                #imprimir_tablero(tablero)
+                #print(f"Quiero poner una elemento vertical en Fila: {fila} - Columna: {columna}, de largo: {largo}")
+                #print("Fallo en superiores e inferiores vertical")
                 return False
         elif columna != 0 and columna == m - 1:
             if tablero[fila + i][columna - 1] != 0:
+                #imprimir_tablero(tablero)
+                #print(f"Quiero poner una elemento vertical en Fila: {fila} - Columna: {columna}, de largo: {largo}")
+                #print("Fallo en superiores e inferiores vertical")
                 return False
         elif columna == 0 and columna < m - 1:
             if tablero[fila + i][columna + 1] != 0:
+                #imprimir_tablero(tablero)
+                #print(f"Quiero poner una elemento vertical en Fila: {fila} - Columna: {columna}, de largo: {largo}")
+                #print("Fallo en superiores e inferiores vertical")
                 return False
-        if tablero[fila + i][columna] != 0:  #Chequeo que no esten ocupados los lugares internos
-            return False
+
 
     cota_superior = fila + largo - 1
     cota_inferior = fila
@@ -150,18 +183,30 @@ def validar_vertical(tablero, fila, columna, largo, demanda_filas, demanda_colum
     if cota_superior < n - 1:
         if columna - 1 >= 0:
             if tablero[fila + largo][columna - 1] != 0:
+                #imprimir_tablero(tablero)
+                #print(f"Quiero poner una elemento vertical en Fila: {fila} - Columna: {columna}, de largo: {largo}")
+                #print("Fallo en diagonales vertical")
                 return False
         if columna + 1 < m:
             if tablero[fila + largo][columna + 1] != 0:
+                #imprimir_tablero(tablero)
+                #print(f"Quiero poner una elemento vertical en Fila: {fila} - Columna: {columna}, de largo: {largo}")
+                #print("Fallo en diagonales vertical")
                 return False
 
     # Verificar la diagonal superior izquierda y derecha
     if cota_inferior > 0:
         if columna - 1 >= 0:
             if tablero[fila - 1][columna - 1] != 0:
+                #imprimir_tablero(tablero)
+                #print(f"Quiero poner una elemento vertical en Fila: {fila} - Columna: {columna}, de largo: {largo}")
+                #print("Fallo en diagonales vertical")
                 return False
         if columna + 1 < m:
             if tablero[fila - 1][columna + 1] != 0:
+                #imprimir_tablero(tablero)
+                #print(f"Quiero poner una elemento vertical en Fila: {fila} - Columna: {columna}, de largo: {largo}")
+                #print("Fallo en diagonales vertical")
                 return False
 
     return True
@@ -184,7 +229,7 @@ def es_valida_colocacion(tablero, fila, columna, largo, orientacion, demanda_fil
 #Post: -
 def colocar_barco(tablero, fila, columna, barco, orientacion):
 
-    tablero_actual = copy.deepcopy(tablero)
+    tablero_actual = [fila[:] for fila in tablero]
     if orientacion == 'H':
         for i in range(barco):
             tablero_actual[fila][columna + i] = 1
@@ -197,11 +242,7 @@ def colocar_barco(tablero, fila, columna, barco, orientacion):
 #Pre: -
 #Post: -
 def calcular_demanda_total(demanda_filas, demanda_columnas):
-    demanda_total = 0
-    for i in range(len(demanda_filas)):
-        demanda_total += demanda_filas[i]
-    for j in range(len(demanda_columnas)):
-        demanda_total += demanda_columnas[j]
+    demanda_total = sum(demanda_filas + demanda_columnas)
     return demanda_total
 
 #Pre: -
@@ -242,41 +283,31 @@ def backtracking_batalla_naval(tablero, mejor_tablero, fila, columna, demanda_fi
         for j in range(columna, cantidad_columnas):
             #print(f"Fila: {i} - Columna: {j}")
             if demanda_filas[i] == 0 or demanda_columnas[j] == 0:
-                continue
-            #if barco > cantidad_filas-1-i and barco > cantidad_columnas-1-j:
-            #    return mejor_tablero, mejor_demanda
-
-            ##HORIZONTAL
-            if es_valida_colocacion(tablero, i, j, barco, 'H', demanda_filas, demanda_columnas):
-                tablero_actual = colocar_barco(tablero, i, j, barco, 'H')
-                demanda_filas_actual, demanda_columnas_actual = actualizar_demandas(demanda_filas, demanda_columnas, i, j, barco, 'H')
-                demanda_actual = contar_demandas_satisfechas(demanda_filas_actual, demanda_columnas_actual, demanda_total)
-                #print(f"Comparando tableros: Actual = {demanda_actual}, Mejor = {mejor_demanda}")
-                if demanda_actual > mejor_demanda:
-                    mejor_demanda =  demanda_actual
-                    mejor_tablero = tablero_actual
+                    continue
+            
+            for orientacion in ['H', 'V']:
+                if es_valida_colocacion(tablero, i, j, barco, orientacion, demanda_filas, demanda_columnas):
+                    tablero_actual = colocar_barco(tablero, i, j, barco, orientacion)
+                    demanda_filas_actual, demanda_columnas_actual = actualizar_demandas(demanda_filas, demanda_columnas, i, j, barco, orientacion)
+                    demanda_actual = contar_demandas_satisfechas(demanda_filas_actual, demanda_columnas_actual, demanda_total)
+                    #print(f"Comparando tableros: Actual = {demanda_actual}, Mejor = {mejor_demanda}")
+                    if demanda_actual >= mejor_demanda:
+                        mejor_demanda =  demanda_actual
+                        mejor_tablero = tablero_actual
+                        imprimir_tablero(tablero_actual)
                     #imprimir_tablero(tablero_actual)
-                mejor_tablero, mejor_demanda = backtracking_batalla_naval(tablero_actual, mejor_tablero, i, j, demanda_filas_actual, demanda_columnas_actual, barcos[1:], mejor_demanda, demanda_total)
-                #if not es_posible_colocar_barco(tablero, demanda_filas, demanda_columnas, i, j, barco, 'H'):
-                #   return mejor_tablero, mejor_demanda
 
-            ##VERTICAL
-            if es_valida_colocacion(tablero, i, j, barco, 'V', demanda_filas, demanda_columnas):
-                tablero_actual = colocar_barco(tablero, i, j, barco, 'V')
-                demanda_filas_actual, demanda_columnas_actual = actualizar_demandas(demanda_filas, demanda_columnas, i, j, barco, 'V')
-                demanda_actual = contar_demandas_satisfechas(demanda_filas_actual, demanda_columnas_actual, demanda_total)
-                #print(f"Comparando tableros: Actual = {demanda_actual}, Mejor = {mejor_demanda}")
-                if demanda_actual > mejor_demanda:
-                    mejor_demanda =  demanda_actual
-                    mejor_tablero = tablero_actual
-                    #imprimir_tablero(tablero_actual)
-                mejor_tablero, mejor_demanda = backtracking_batalla_naval(tablero_actual, mejor_tablero, i, j, demanda_filas_actual, demanda_columnas_actual, barcos[1:], mejor_demanda, demanda_total)
-                #if not es_posible_colocar_barco(tablero, demanda_filas, demanda_columnas, i, j, barco, 'V'):
-                #   return mejor_tablero, mejor_demanda
+                    # Calcular la siguiente posición
+                    siguiente_fila = i
+                    siguiente_columna = j + 1
+                    if siguiente_columna >= cantidad_columnas:
+                        siguiente_fila += 1
+                        siguiente_columna = 0
+
+                    mejor_tablero, mejor_demanda = backtracking_batalla_naval(tablero_actual, mejor_tablero, siguiente_fila, siguiente_columna, demanda_filas_actual, demanda_columnas_actual, barcos[1:], mejor_demanda, demanda_total)
         
         columna = 0
-    fila = 0
-
+    #fila = 0
     #print("Fin de la iteración\n")
     return mejor_tablero, mejor_demanda
 
@@ -352,8 +383,8 @@ def main():
     #demanda_filas, demanda_columnas, barcos = leer_datos("archivos_prueba/5_5_6.txt") #0.0006 segundos
     #demanda_filas, demanda_columnas, barcos = leer_datos("archivos_prueba/8_7_10.txt") #31.0737 segundos
     #demanda_filas, demanda_columnas, barcos = leer_datos("archivos_prueba/10_3_3.txt") #0.0030 segundos
-    #demanda_filas, demanda_columnas, barcos = leer_datos("archivos_prueba/10_10_10.txt") #0.0200 segundos PERO LO HACE MAL
-    demanda_filas, demanda_columnas, barcos = leer_datos("archivos_prueba/20_20_20.txt") #14.0030 segundos PERO LO HACE MAL
+    demanda_filas, demanda_columnas, barcos = leer_datos("archivos_prueba/10_10_10.txt") #0.0200 segundos PERO LO HACE MAL
+    #demanda_filas, demanda_columnas, barcos = leer_datos("archivos_prueba/20_20_20.txt") #14.0030 segundos PERO LO HACE MAL
     
     n = len(demanda_filas)
     m = len(demanda_columnas)
@@ -373,6 +404,11 @@ def main():
 
     print("Tablero obtenido")
     imprimir_tablero(tablero_obtenido)
+
+    '''if es_valida_colocacion(tablero, 1, 3, 2, 'H', demanda_filas, demanda_columnas):
+        print("Es valido!")
+    else:
+        print("No es valido")'''
 
 if __name__ == "__main__":
     main()
