@@ -282,9 +282,9 @@ def backtracking_batalla_naval(tablero, mejor_tablero, fila, columna, demanda_fi
     cantidad_columnas = len(demanda_columnas)
     se_pudo_colocar = False
 
-    #demanda_maxima_posible = sum(barcos)*2 + contar_demandas_satisfechas(demanda_filas, demanda_columnas, demanda_total)
-    #if demanda_maxima_posible <= mejor_demanda:
-    #    return mejor_tablero, mejor_demanda
+    demanda_maxima_posible = sum(barcos)*2 + contar_demandas_satisfechas(demanda_filas, demanda_columnas, demanda_total)
+    if demanda_maxima_posible <= mejor_demanda:
+        return mejor_tablero, mejor_demanda
     
     
     for i in range(fila, cantidad_filas):
@@ -388,14 +388,16 @@ def validar_vertical_sin_tablero(fila, columna, largo, demanda_filas, demanda_co
 #Pre: -
 #Post: -
 def main():
-    #demanda_filas, demanda_columnas, barcos = leer_datos("archivos_prueba/3_3_2.txt") #0.0013 segundos [OPTIMO DE: 11 total | 4 satisfecho]
-    #demanda_filas, demanda_columnas, barcos = leer_datos("archivos_prueba/5_5_6.txt") #0.0029 segundos [OPTIMO DE: 18 total | 12 satisfecho]
-    #demanda_filas, demanda_columnas, barcos = leer_datos("archivos_prueba/8_7_10.txt") #0.0737 segundos [OPTIMO DE: 53 total | 26 satisfecho]
+    #demanda_filas, demanda_columnas, barcos = leer_datos("archivos_prueba/3_3_2.txt") #0.0001 segundos [OPTIMO DE: 11 total | 4 satisfecho]
+    #demanda_filas, demanda_columnas, barcos = leer_datos("archivos_prueba/5_5_6.txt") #0.0011 segundos [OPTIMO DE: 18 total | 12 satisfecho]
+    #demanda_filas, demanda_columnas, barcos = leer_datos("archivos_prueba/8_7_10.txt") #0.0012 segundos [OPTIMO DE: 53 total | 26 satisfecho]
     #demanda_filas, demanda_columnas, barcos = leer_datos("archivos_prueba/10_3_3.txt") #0.0002 segundos [OPTIMO DE: 14 total | 6 satisfecho]
     #demanda_filas, demanda_columnas, barcos = leer_datos("archivos_prueba/10_10_10.txt") #0.0013 segundos [OPTIMO DE: 40 total | 40 satisfecho]
     demanda_filas, demanda_columnas, barcos = leer_datos("archivos_prueba/12_12_21.txt") #0.79 segundos [OPTIMO DE: 58 total | 40 satisfecho] MAL deberia ser 46
-    #demanda_filas, demanda_columnas, barcos = leer_datos("archivos_prueba/15_10_15.txt") #105.19 segundos BIEN
-    #demanda_filas, demanda_columnas, barcos = leer_datos("archivos_prueba/20_20_20.txt") #Indeterminado
+    #demanda_filas, demanda_columnas, barcos = leer_datos("archivos_prueba/15_10_15.txt") #0.0008 segundos [OPTIMO DE: 67 total | 40 satisfecho]
+    #demanda_filas, demanda_columnas, barcos = leer_datos("archivos_prueba/20_20_20.txt") #0.0098 segundos [OPTIMO DE: 120 total | 104 satisfecho]
+    #demanda_filas, demanda_columnas, barcos = leer_datos("archivos_prueba/20_25_30.txt") #0.0081 segundos [OPTIMO DE: 247 total | 172 satisfecho]
+    #demanda_filas, demanda_columnas, barcos = leer_datos("archivos_prueba/30_25_25.txt") #0.4844 segundos [OPTIMO DE: 360 total | 186 satisfecho] MAL deberia ser 202
     
     n = len(demanda_filas)
     m = len(demanda_columnas)
