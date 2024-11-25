@@ -231,9 +231,6 @@ def backtracking_batalla_naval(tablero, mejor_tablero, fila, columna, demanda_fi
                             mejor_tablero, mejor_demanda = backtracking_batalla_naval(tablero_actual, mejor_tablero, 0, 0, demanda_filas_actual, demanda_columnas_actual, barcos[1:], mejor_demanda, demanda_actual, demanda_total)
                     else:
                         return mejor_tablero, mejor_demanda
-                    
-        #print(f"Barco actual: {barco}")
-        #imprimir_tablero(tablero)
 
     return backtracking_batalla_naval(tablero, mejor_tablero, 0, 0, demanda_filas, demanda_columnas, barcos[1:], mejor_demanda, demanda_satisfecha, demanda_total)
 
