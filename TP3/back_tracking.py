@@ -1,5 +1,4 @@
 
-
 import time
 
 #Funciones Auxiliares
@@ -196,10 +195,11 @@ def backtracking_batalla_naval(tablero, mejor_tablero, fila, columna, demanda_fi
         return mejor_tablero, mejor_demanda
 
     barco = barcos[0]
+    es_posible_colocar = False
     cantidad_filas = len(demanda_filas)
     cantidad_columnas = len(demanda_columnas)
 
-    demanda_maxima_posible = sum(barcos)*2 + demanda_satisfecha
+    demanda_maxima_posible = sum(barcos) * 2 + demanda_satisfecha
     if demanda_maxima_posible <= mejor_demanda:
         return mejor_tablero, mejor_demanda
     
@@ -213,8 +213,9 @@ def backtracking_batalla_naval(tablero, mejor_tablero, fila, columna, demanda_fi
                     tablero_actual = colocar_barco(tablero, i, j, barco, orientacion)
                     demanda_filas_actual, demanda_columnas_actual = actualizar_demandas(demanda_filas, demanda_columnas, i, j, barco, orientacion)
                     demanda_actual = contar_demandas_satisfechas(demanda_filas_actual, demanda_columnas_actual, demanda_total)
+                    es_posible_colocar = True
                     
-                    if demanda_actual >= mejor_demanda:
+                    if demanda_actual > mejor_demanda:
                         mejor_demanda = demanda_actual
                         mejor_tablero = tablero_actual
 
@@ -224,7 +225,7 @@ def backtracking_batalla_naval(tablero, mejor_tablero, fila, columna, demanda_fi
                         next_fila += 1
                         next_columna = 0
 
-                    if len(barcos) > 1: 
+                    if len(barcos) > 1:
                         if barco == barcos[1]:
                             mejor_tablero, mejor_demanda = backtracking_batalla_naval(tablero_actual, mejor_tablero, next_fila, next_columna, demanda_filas_actual, demanda_columnas_actual, barcos[1:], mejor_demanda, demanda_actual, demanda_total)
                         else:
@@ -232,8 +233,12 @@ def backtracking_batalla_naval(tablero, mejor_tablero, fila, columna, demanda_fi
                     else:
                         return mejor_tablero, mejor_demanda
 
+    if len(barcos) > 1:
+        if barco == barcos[1] and es_posible_colocar:
+            barcos_filtrados = [b for b in barcos if b != barco]
+            return backtracking_batalla_naval(tablero, mejor_tablero, 0, 0, demanda_filas, demanda_columnas, barcos_filtrados, mejor_demanda, demanda_satisfecha, demanda_total)
+    
     return backtracking_batalla_naval(tablero, mejor_tablero, 0, 0, demanda_filas, demanda_columnas, barcos[1:], mejor_demanda, demanda_satisfecha, demanda_total)
-
 
 #Pre: -
 #Post: -
