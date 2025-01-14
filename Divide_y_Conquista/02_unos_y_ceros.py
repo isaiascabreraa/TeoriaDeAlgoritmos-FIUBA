@@ -1,47 +1,35 @@
 
-def obtener_indice(arr, actual):
-    if actual == 0:
-        if arr[actual] == 0:
-            return actual
-        else:
-            return actual+1
-    if arr[actual-1] == 0:
-        return actual-1
-    elif arr[actual] == 0:
-        return actual
-    else:
-        return actual+1
-    
-def verificar_alrededor(arr, actual, numero):
-    if actual == 0:
-        return arr[actual] == numero and arr[actual+1] == numero and numero != 0
-    return arr[actual-1] == numero and arr[actual+1] == numero
-
 def busqueda_primer_cero(arr, inicio, fin):
-    if inicio >= fin:
+    if inicio > fin:
         return -1
 
-    actual = (inicio+fin) // 2
-    
-    if verificar_alrededor(arr, actual, 1):
-        return busqueda_primer_cero(arr, actual+1, fin)
+    mitad = (inicio + fin) // 2
 
-    elif verificar_alrededor(arr, actual, 0):
-        return busqueda_primer_cero(arr, inicio, actual)
+    if arr[mitad] == 1 and arr[mitad + 1] == 0:
+        return mitad + 1
+    elif arr[mitad] == 0 and arr[mitad - 1] == 1:
+        return mitad
 
-    else:
-        return obtener_indice(arr, actual)
+    if arr[mitad] == 1:
+        return busqueda_primer_cero(arr, mitad + 1, fin)
+    elif arr[mitad] == 0:
+        return busqueda_primer_cero(arr, inicio, mitad - 1)
+
 
 def indice_primer_cero(arr):
+    if arr[0] == 0:
+        return 0
+    
+    if arr[len(arr)-1] == 1:
+        return -1
+    
     return busqueda_primer_cero(arr, 0, len(arr)-1)
 
 def main():
-    #arr = [1,1,1,1,1,0,0,0,0,0,0,0] #El cero esta en el indice 5
-    #arr = [1,1,1,1,1,1,1,1,1,1,1,1] #Todo 1
-    arr = [0,0,0,0,0,0,0,0,0,0,0,0] #Todo 0
+    arr = [1,1,1,1,1,0,0,0,0,0,0,0]
     indice_buscado = indice_primer_cero(arr)
-    
-    print(f"Indice: {indice_buscado}")
+    print(f"Indice buscado: {indice_buscado}")
+
 
 if __name__ == "__main__":
     main()

@@ -263,7 +263,7 @@ def filtrar_barcos_imposibles(demanda_filas, demanda_columnas, barcos):
     n = len(demanda_filas)
     m = len(demanda_columnas)
 
-    for barco in barcos:
+    for indice, barco in enumerate(barcos):
         posible = False
 
         for i in range(n):
@@ -273,7 +273,6 @@ def filtrar_barcos_imposibles(demanda_filas, demanda_columnas, barcos):
                     break
             if posible:
                 break
-            
         if not posible:
             for j in range(m):
                 for i in range(n - barco + 1):
@@ -283,7 +282,8 @@ def filtrar_barcos_imposibles(demanda_filas, demanda_columnas, barcos):
                 if posible:
                     break
         if posible:
-            barcos_posibles.append(barco)
+            barcos_posibles.extend(barcos[indice:])
+            break
 
     return barcos_posibles
 

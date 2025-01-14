@@ -1,6 +1,7 @@
 
 def busqueda_parte_entera(raiz_buscada, minimo_actual, maximo_actual):
-    if minimo_actual+1 >= maximo_actual:
+
+    if minimo_actual + 1 >= maximo_actual:
         return minimo_actual
 
     numero_encontrado = (minimo_actual+maximo_actual) // 2
@@ -18,11 +19,12 @@ def busqueda_parte_entera(raiz_buscada, minimo_actual, maximo_actual):
 def parte_entera_raiz(n):
     if n == 1:
         return 1
+    
     return busqueda_parte_entera(n, 0, n)
 
 def main():
-    
-    numero = 1
+
+    numero = 9
     raiz_encontrada = parte_entera_raiz(numero)
     print(f"Raiz de {numero} es {raiz_encontrada}")
 
