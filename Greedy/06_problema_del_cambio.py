@@ -4,7 +4,7 @@ Problema 06:
 Implementar un algoritmo Greedy que devuelva el cambio pedido, usando la mínima cantidad de monedas/billetes. El algoritmo recibirá un arreglo de valores del sistema monetario, y la cantidad de cambio objetivo a dar, y debe devolver qué monedas/billetes deben ser utilizados para minimizar la cantidad total utilizada. 
 
 Resolucion:
-Nuestra regla Greedy sera: "Emplearemos los billetes de mayor denominacion primero".
+Nuestra regla Greedy será: "Emplearemos los billetes de mayor denominacion primero".
 
 Lo que se hace es ver el monto, tomar el billete mas grande que pueda y dividirlo por el mismo. Si el la division me da mayor que 1, me alcanza con ese billete y me quedo 
 solo con la parte entera. Luego agrego a mi vector 'vuelto' la denominacion de la moneda una cantidad de n veces (parte entera) y por ultimo resto la cantidad de divisas 
