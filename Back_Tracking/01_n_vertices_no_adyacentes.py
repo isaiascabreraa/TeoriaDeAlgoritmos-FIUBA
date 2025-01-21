@@ -1,4 +1,7 @@
 
+
+from lib.grafo import Grafo
+
 """
 Problema 01:
 Implementar por backtracking un algoritmo que, dado un grafo no dirigido y un numero n menor a #V, devuelva si es posible obtener un subconjunto de n vertices tal 
@@ -9,7 +12,6 @@ Resolucion: ...
 La complejidad algoritmica es del orden de: ...
 """
 
-from lib.grafo import Grafo
 
 def subconjunto_no_adyacente(grafo, n, subconjunto, mejor_subconjunto, index, vertices):
 
@@ -30,6 +32,7 @@ def subconjunto_no_adyacente(grafo, n, subconjunto, mejor_subconjunto, index, ve
 
     return mejor_subconjunto
 
+
 def no_adyacentes(grafo, n):
     if not grafo:
         return None
@@ -42,6 +45,17 @@ def no_adyacentes(grafo, n):
 
     return subconjunto_buscado
 
+
+
+def main():
+    vertices = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'] #Tamaño 10
+
+    grafo = generar_grafo(vertices)
+
+    '''Dadas las disposiciones del grafo, tiene como maximo 4 vertices adyacentes. 
+    Si n > 4 el resultado será None.'''
+    n = 4
+    no_adyacentes(grafo, n)
 
 def generar_grafo(vertices):
     grafo = Grafo(False, vertices)
@@ -57,18 +71,6 @@ def generar_grafo(vertices):
         indice += 3
 
     return grafo
-
-def main():
-
-    vertices = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'] #Tamaño 10
-
-    grafo = generar_grafo(vertices)
-    grafo_sin_aristas = Grafo(False, vertices)
-
-    '''Dadas las disposiciones del grafo, tiene como maximo 4 vertices adyacentes. 
-    Si n > 4 el resultado será None.'''
-    n = 4
-    no_adyacentes(grafo, n)
 
 if __name__ == "__main__":
     main()
