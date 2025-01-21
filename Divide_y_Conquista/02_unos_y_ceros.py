@@ -23,7 +23,7 @@ def indice_primer_cero(arr):
     if arr[len(arr)-1] == 1:
         return -1
     
-    return busqueda_primer_cero(arr, 0, len(arr)-1)
+    return busqueda_primer_cero(arr, 0, len(arr) - 1)
 
 def main():
     arr = [1,1,1,1,1,0,0,0,0,0,0,0]
