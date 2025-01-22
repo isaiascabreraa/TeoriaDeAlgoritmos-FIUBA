@@ -12,13 +12,13 @@ La complejidad algoritmica es del orden de: ...
 """
 
 
-def es_color_valido(color, colores, vertices, adyacentes):
+def es_color_valido(color, colores, adyacentes):
     for adyacente in adyacentes:
         if color == colores[adyacente]:
             return False
     return True
 
-def subconjunto_coloreado(grafo, n, colores, v_coloreados, posicion, vertices):
+def bt_colorear(grafo, n, colores, v_coloreados, posicion, vertices):
 
     if v_coloreados == len(vertices):
         return True
@@ -26,9 +26,9 @@ def subconjunto_coloreado(grafo, n, colores, v_coloreados, posicion, vertices):
     for color in range(n):
         adyacentes = grafo.adyacentes(vertices[posicion])
 
-        if es_color_valido(color, colores, vertices, adyacentes):
+        if es_color_valido(color, colores, adyacentes):
             colores[vertices[posicion]] = color
-            if subconjunto_coloreado(grafo, n, colores, v_coloreados+1, posicion+1, vertices):
+            if bt_colorear(grafo, n, colores, v_coloreados+1, posicion+1, vertices):
                 return True
             colores[vertices[posicion]] = -1
     return False
@@ -36,7 +36,7 @@ def subconjunto_coloreado(grafo, n, colores, v_coloreados, posicion, vertices):
 def colorear(grafo, n):
     vertices = grafo.obtener_vertices()
     colores = {vertice: -1 for vertice in vertices}
-    return subconjunto_coloreado(grafo, n, colores, 0, 0, vertices)
+    return bt_colorear(grafo, n, colores, 0, 0, vertices)
 
 
 

@@ -13,7 +13,7 @@ La complejidad algoritmica es del orden de: ...
 """
 
 
-def subconjunto_no_adyacente(grafo, n, subconjunto, mejor_subconjunto, index, vertices):
+def bt_no_adyacentes(grafo, n, subconjunto, mejor_subconjunto, index, vertices):
 
     if len(subconjunto) == n:
         return subconjunto
@@ -25,7 +25,7 @@ def subconjunto_no_adyacente(grafo, n, subconjunto, mejor_subconjunto, index, ve
 
         if not es_adyacente:
             nuevo_subconjunto = subconjunto + [vertice_actual]
-            mejor_subconjunto = subconjunto_no_adyacente(grafo, n, nuevo_subconjunto, mejor_subconjunto, i + 1, vertices)
+            mejor_subconjunto = bt_no_adyacentes(grafo, n, nuevo_subconjunto, mejor_subconjunto, i + 1, vertices)
 
     if not mejor_subconjunto:
         return None
@@ -40,7 +40,7 @@ def no_adyacentes(grafo, n):
     vertices = grafo.obtener_vertices()
     print("El subconjunto esperado es: ['A', 'D', 'G', 'J']")
     
-    subconjunto_buscado = subconjunto_no_adyacente(grafo, n, [], [], 0, vertices)
+    subconjunto_buscado = bt_no_adyacentes(grafo, n, [], [], 0, vertices)
     print(f"El subconjunto obtenido es: {subconjunto_buscado}")
 
     return subconjunto_buscado

@@ -50,32 +50,36 @@ def es_posicion_valida(tablero, n, n_reinas, posicion):
 
     return True
 
-
-def colocar_nreinas(tablero, n, n_reinas):
+#Pre: -
+#Post: Devuelve una lista con las posiciones en las que colocar a las n reinas del tablero nxn tal que ninguna de ellas puede comerse a las demas.
+#       Si no es posible devuelve la lista vacia.
+def colocar_nreinas(tablero, n, n_reinas, posicion):
     if len(n_reinas) == n:
         return n_reinas
 
-    for i in range(n):
-        for j in range(n):
-            posicion = (i, j)
-            if tablero[i][j] == 0 and es_posicion_valida(tablero, n, n_reinas, posicion):
+    fila, columna = posicion
 
+    for i in range(fila, n):
+        for j in range(columna if i == fila else 0, n):
+            if tablero[i][j] == 0 and es_posicion_valida(tablero, n, n_reinas, (i, j)):
                 tablero[i][j] = 1
                 n_reinas.append((i, j))
 
-                resultado = colocar_nreinas(tablero, n, n_reinas)
-                if resultado:
+                resultado = colocar_nreinas(tablero, n, n_reinas, (i, j + 1))
+                if len(resultado) == n:
                     return resultado
 
                 n_reinas.pop()
                 tablero[i][j] = 0
-    return []
+
+    return n_reinas
 
 
 def nreinas(n):
     tablero = [[0 for _ in range(n)] for _ in range(n)]
-    resultado = colocar_nreinas(tablero, n, [])
-    return resultado
+    resultado = colocar_nreinas(tablero, n, [], (0, 0))
+    return resultado if len(resultado) == n else []
+
 
 
 def main():
