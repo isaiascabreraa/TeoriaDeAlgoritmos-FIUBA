@@ -62,7 +62,11 @@ def resolver_sudoku(matriz):
     tamanio_subgrupos = 3
     tamanio_matriz = len(matriz)
 
-    bt_resolver_sudoku(matriz, tamanio_matriz, tamanio_subgrupos, 0)
+    if bt_resolver_sudoku(matriz, tamanio_matriz, tamanio_subgrupos, 0):
+        print("Sudoku resuelto")
+    else:
+        print("No se ha podido resolver el sudoku")
+
     return matriz
     
 
@@ -91,17 +95,6 @@ def main():
     [2, 8, 7, 4, 1, 9, 6, 3, 5],
     [3, 4, 5, 2, 8, 6, 1, 7, 9],]
 
-    """sudoku_completo = [
-    [5, 3, 4],
-    [6, 7, 2],
-    [1, 9, 8]]"""
-
-    """sudoku_sin_resolver = [
-    [5, 3, 0],
-    [6, 0, 0],
-    [0, 9, 8]]"""
-
-
     sudoku_sin_resolver = [
     [5, 3, 4, 6, 7, 8, 9, 1, 2],
     [6, 0, 0, 1, 9, 5, 3, 0, 8],
@@ -117,6 +110,7 @@ def main():
     
     if comparar_matrices(sudoku_resuelto, sudoku_completo):
         print("Resolucion exitosa, sudoku completado!")
+        
     else:
         print("El sudoku no ha sido resulto correctamente")
 

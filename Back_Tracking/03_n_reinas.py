@@ -18,7 +18,7 @@ def es_posicion_valida(tablero, n, n_reinas, posicion):
         if reinas[0] == x or reinas[1] == y:
             return False
 
-    # Verificar diagonal principal (↘)
+    # Verifica diagonal principal (↘)
     i, j = x, y
     while i >= 0 and j >= 0:
         if tablero[i][j] != 0:
@@ -33,7 +33,7 @@ def es_posicion_valida(tablero, n, n_reinas, posicion):
         i += 1
         j += 1
 
-    # Verificar diagonal secundaria (↙)
+    # Verifica diagonal secundaria (↙)
     i, j = x, y
     while i >= 0 and j < n:
         if tablero[i][j] != 0:
