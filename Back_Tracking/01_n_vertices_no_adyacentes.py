@@ -12,7 +12,6 @@ Resolucion: ...
 La complejidad algoritmica es del orden de: ...
 """
 
-
 def bt_no_adyacentes(grafo, n, subconjunto, mejor_subconjunto, index, vertices):
 
     if len(subconjunto) == n:
