@@ -18,7 +18,20 @@ Indicar y justificar la complejidad del algoritmo implementado. Ejemplos:
     Empezando por 8, son válidos 88, 80, 85, 87, 89 (cantidad: 5)
     Empezando por 9, son válidos 99, 96, 98 (cantidad: 3)
 
-Resolucion:
+Resolucion: Primero formo un grafo que representa cada una de las teclas numericas de un celular y añado sus correspondientes vecinos segun como se encuentran dispuestos
+en el telefono. Con esta informacion, lo que hago es iniciar con un caso base en donde n = 0 para el cual la cantidad de reclas recorridas es 1 para cada tecla ya que no 
+me muevo de la posicion. Añado un 1 a cada una de las posiciones de mi arreglo denominado "teclas_recorridas".
+
+Luego el siguiente caso es si n = 1 por lo que puedo desplazarme una posicion desde mi tecla inicial. Reviso las teclas adyacentes a mi tecla actual y sumo el 
+total de sus recorridos anteriores por lo que si k = 5 (siendo k la tecla de inicio) y los vecinos de mi tecla_actual son 2, 4, 6 y 8, debo sumar teclas_recorridas[2], 
+teclas_recorridas[4], teclas_recorridas[6] y teclas_recorridas[8] para luego almacenarlo en teclas_actuales[tecla_actual] para indicar que esa es la cantidad de 
+movimiento posibles si k = 5 y n = 2. 
+
+Continuo haciendo esto para cada tecla y cuando finalice el recorrido con cada una de ellas para el largo correspondiente el resultado estará almacenado en 
+teclas_recorridas[tecla_inicial]. Mi ecuacion de recurrencia es: teclas_actual[tecla] = sum(teclas_recorridas[adyacente] for adyacente in teclado.adyacentes(tecla))
+
+Como aclaración, si bien podria haber usado una matriz en vez de dos listas del tamaño de la cantidad de vertices (teclas). El hecho de usar dos listas fué por
+una optimizacion de complejidad espacial innecesaria.
 
 La complejidad algoritmica es del orden de: O(n^2)
 """
@@ -53,17 +66,17 @@ def numeros_posibles(k, n):
 
 def numeros_posibles_dinamico(teclado, tecla_inicial, largo, cantidad_teclas):
 
-    anterior = [1] * cantidad_teclas
-    actual = [0] * cantidad_teclas
+    teclas_recorridas = [1] * cantidad_teclas
+    teclas_actual = [0] * cantidad_teclas
 
     for _ in range(2, largo + 1):  
         for tecla in range(cantidad_teclas):
 
-            actual[tecla] = sum(anterior[adyacente] for adyacente in teclado.adyacentes(tecla))
+            teclas_actual[tecla] = sum(teclas_recorridas[adyacente] for adyacente in teclado.adyacentes(tecla))
         
-        anterior, actual = actual, [0] * cantidad_teclas  
+        teclas_recorridas, teclas_actual = teclas_actual, [0] * cantidad_teclas
 
-    return anterior[tecla_inicial]
+    return teclas_recorridas[tecla_inicial]
 
 
 def main():
