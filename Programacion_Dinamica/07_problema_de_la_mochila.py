@@ -11,7 +11,7 @@ La complejidad algoritmica es del orden de: O(n * w)
 
 def reconstruir_solucion(elementos_optimos, elementos, cantidad_elementos, W):
 
-    j = W - 1
+    j = W
     i = cantidad_elementos
     elementos_seleccionados = []
 
@@ -34,13 +34,12 @@ def mochila(elementos, W):
     elementos_optimos = mochila_dinamica(elementos, cantidad_elementos, W)
     return reconstruir_solucion(elementos_optimos, elementos, cantidad_elementos, W)
 
-
 def mochila_dinamica(elementos, cantidad_elementos, W):
 
-    M_OPTIMOS = [[0] * W for _ in range(cantidad_elementos + 1)]
+    M_OPTIMOS = [[0] * (W + 1) for _ in range(cantidad_elementos + 1)]
 
     for i in range(1, cantidad_elementos + 1):
-        for j in range(1, W):
+        for j in range(1, W + 1):
 
             if elementos[i - 1][1] <= j:
                 M_OPTIMOS[i][j] = max(
@@ -51,6 +50,7 @@ def mochila_dinamica(elementos, cantidad_elementos, W):
                 M_OPTIMOS[i][j] = M_OPTIMOS[i - 1][j]  # No incluyo el elemento
 
     return M_OPTIMOS
+
 
 def main():
 
