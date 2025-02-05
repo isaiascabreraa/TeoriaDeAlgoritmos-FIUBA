@@ -8,6 +8,7 @@ siempre la solución óptima? Justificar. ¿Por qué se trata de un algoritmo Gr
 
 Resolucion:
 Nuestra regla Greedy será: "Comprar los elementos mas caros primero"
+
 """
 
 def precios_inflacion_minimo(R):

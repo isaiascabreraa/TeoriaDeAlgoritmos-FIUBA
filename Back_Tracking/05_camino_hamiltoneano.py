@@ -53,7 +53,6 @@ def camino_hamiltoniano(grafo):
 
 
 def main():
-    
     vertices = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'] #Tamaño 10
     grafo = generar_grafo(vertices)
 

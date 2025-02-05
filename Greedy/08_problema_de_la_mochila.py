@@ -8,10 +8,19 @@ para maximizar la ganancia total. Indicar y justificar la complejidad del algori
 
 Resolucion:
 Nuestra regla Greedy sera: "Tomar primero los elementos que tengan una mejor relacion valor/peso"
+Los elementos con la mayor relación valor/peso son los que nos dan más valor por cada unidad de peso que ocupan. Sin embargo, para el problema de la mochila 0-1 (donde los 
+elementos no se pueden dividir), este algoritmo no siempre garantiza una solución óptima.
+
+Un ejemplo donde no se cumpla es si tengo: [(60, 10), (100, 20), (120, 30)] y W =50. En este caso mi solucion con esta regla quedaria en que debo colocar los elementos 1 y 2
+pero el optimo realmente es colocar los elementos 2 y 3.
+
+Es un algoritmo Greedy porque en cada paso toma la decisión localmente óptima (seleccionar el elemento con la mejor relación valor/peso), sin considerar el impacto de esa 
+decisión en el futuro. Esta estrategia no garantiza que la solución global sea óptima, pero a menudo produce una solución que es lo suficientemente buena de manera 
+eficiente.
 
 Lo que se hace...
 
-La complejidad algoritmica es del orden de: 
+La complejidad algoritmica es del orden de: O(n log n)
 """
 
 def mochila(elementos, W):

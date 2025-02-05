@@ -6,10 +6,13 @@ que no hayan dos mafias ocupando mismo territorio, y a su vez maximizando la can
 algoritmo implementado.
 
 Resolucion:
-Nuestra regla Greedy sera: "Priorizar los permisos que tengan una distancia mas pequeña entre el inicio y el fin". El algoritmo planteado es Greedy 
-porque sigue una estrategia de selección localmente óptima en cada paso con la esperanza de encontrar una solución globalmente óptima. En este caso, 
-el algoritmo selecciona siempre el pedido que termina más temprano y que no se solapa con los pedidos ya seleccionados. Esta elección localmente óptima 
-(seleccionar el intervalo que termina más temprano) se repite en cada paso hasta que no queden más intervalos que puedan ser seleccionados sin solaparse.
+Nuestra regla Greedy sera: "Priorizar los permisos que tengan una distancia mas pequeña entre el inicio y el fin". Este algoritmo siempre da una solución óptima 
+para el problema de selección de intervalos porque al seleccionar siempre el intervalo que termina más temprano, se maximiza el espacio disponible para seleccionar más 
+intervalos en el futuro. Esto garantiza que no se pierdan oportunidades de seleccionar intervalos adicionales.
+
+El algoritmo planteado es Greedy porque sigue una estrategia de selección localmente óptima en cada paso con la esperanza de encontrar una solución globalmente 
+óptima. En este caso, el algoritmo selecciona siempre el pedido que termina más temprano y que no se solapa con los pedidos ya seleccionados. Esta elección localmente 
+óptima (seleccionar el intervalo que termina más temprano) se repite en cada paso hasta que no queden más intervalos que puedan ser seleccionados sin solaparse.
 
 Lo que se hace...
 
@@ -31,13 +34,13 @@ def distribuir_mafias(pedidos):
 
 	return seleccionados
 
-# pedidos: lista de tuplas con (km inicio, km fin)
 def asignar_mafias(pedidos):
     return distribuir_mafias(pedidos)
 
 
 def main():
 
+	#pedidos: lista de tuplas con (km inicio, km fin)
 	pedidos = [(1, 3.5), (3.3333, 8), (2, 5), (6, 10), (8, 9)]
 	resultado = asignar_mafias(pedidos)
 	print("Pedidos seleccionados:", resultado)

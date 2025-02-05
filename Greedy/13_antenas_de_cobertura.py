@@ -8,16 +8,20 @@ los kilómetros sobre los que debemos construir las antenas para que todas las c
 y justificar la complejidad del algoritmo implementado. Justificar por qué se trata de un algoritmo greedy. ¿El algoritmo da la solución óptima siempre?
 
 Resolucion:
-Nuestra regla Greedy sera: "Colocar las antenas en base a la posicion de las casas de forma creciente"
+Nuestra regla Greedy sera: "Colocar una antena en la posición más lejana posible dentro del rango de la primera casa no cubierta". Sí, el algoritmo siempre da la solución 
+óptima. Esto se debe a que sigue una estrategia greedy que garantiza la selección de la menor cantidad de antenas necesarias para cubrir todas las casas debido a que en
+cada paso el algoritmo selecciona la posición de la antena de manera que cubra la mayor cantidad de casas posibles hacia adelante.
+
+El algoritmo es considerado Greedy porque toma decisiones localmente óptimas en cada paso con la esperanza de que estas decisiones conduzcan a una solución global óptima. 
+En este caso, el algoritmo selecciona la posición de la antena en cada paso de manera que se cubran la mayor cantidad de casas posible en su rango de cobertura, sin 
+necesidad de retroceder o reconsiderar las decisiones previas.
 
 Lo que se hace...
 
-La complejidad algoritmica es del orden de: O(n²)
+La complejidad algoritmica es del orden de: O(n log n)
 """
 
-
 def cobertura(casas, R, K):
-
     casas.sort()
     antenas_colocadas = []
     cantidad_casas = len(casas)
@@ -29,16 +33,14 @@ def cobertura(casas, R, K):
         while j < cantidad_casas and casas[j] <= casas[i] + R:
             j += 1
         
-
         antena = casas[i] + 50
         if antena > K:
             antena = K
-        
         antenas_colocadas.append(antena)
             
-
-        while i < cantidad_casas and casas[i] <= antena + R:
-            i += 1
+        while j < cantidad_casas and casas[j] <= antena + R:
+            j += 1
+        i = j
 
     return antenas_colocadas
 

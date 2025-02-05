@@ -6,7 +6,13 @@ en la menor cantidad posible de bolsas. Realizar el seguimiento del algoritmo pr
 pesos: [ 4, 2, 1, 3, 5 ].
 
 Resolucion:
-Nuestra regla Greedy sera: "Se toma el valor mas grande y si sobra espacio, se busca el siguiente elemento mas grande para llenar el espacio"
+Nuestra regla Greedy sera: "Colocar el producto más pesado disponible en la bolsa mientras no supere la capacidad"
+No, el algoritmo no garantiza siempre la solución óptima. El enfoque greedy de "tomar el producto más pesado primero" no siempre conducirá a la 
+distribución óptima de productos. En algunos casos, puede ser necesario hacer ajustes o realizar una búsqueda más exhaustiva para encontrar la 
+mejor distribución posible.
+
+Un ejemplo donde no se cumpla es si mis productos son [4, 2, 1, 3, 5 ] y mi capacidad es 5 en donde nuestro algoritmo nos dará la distribucion
+de [[1, 2], [3], [4], [5]] usando 4 bolsas pero la solucion mas optima es [[3, 2], [4], [5, 1]] unicamente usando 3 bolsas.
 
 Lo que se hace...
 
@@ -16,27 +22,30 @@ La complejidad algoritmica es del orden de: O(n²)
 def distribuir_en_bolsas(capacidad, productos):
     if capacidad <= 0 or not productos:
         return []
-
+    
+    bolsa = []
     bolsas = []
-    productos_usados = set()
-    productos.sort(reverse=True) 					#O(nlog(n))
+    productos.sort()
+    peso_acumulado = 0
 
-    for i in range(len(productos)): 				#O(n)
-        if i in productos_usados: 					#O(1)
-            continue
+    for i in productos:
+        # Si el producto cabe en la bolsa actual sin exceder la capacidad
+        if peso_acumulado + i <= capacidad:
+            bolsa.append(i)
+            peso_acumulado += i  # Actualiza el peso acumulado en la bolsa
 
-        bolsa = []
-        capacidad_actual = capacidad
+        else: # Si el producto no cabe, guarda la bolsa actual y empieza una nueva
+            bolsas.append(bolsa)
+            if i <= capacidad:
+                bolsa = []
+                bolsa.append(i)
+                peso_acumulado = i
+            else:
+                bolsa = []
+                peso_acumulado = 0
 
-        for j in range(i, len(productos)): 			#O(n)
-
-            if j not in productos_usados and productos[j] <= capacidad_actual: #O(1)
-
-                bolsa.append(productos[j])			#O(1)
-                capacidad_actual -= productos[j]	#O(1)
-                productos_usados.add(j) 			#O(1)
-
-        bolsas.append(bolsa) 						#O(1)
+    if len(bolsa) != 0:
+        bolsas.append(bolsa)
 
     return bolsas
 
@@ -45,8 +54,8 @@ def bolsas(capacidad, productos):
 
 def main():
 
-    peso_maximo = 9
-    pesos = [4, 2, 1, 3, 5, 7, 3, 1]
+    peso_maximo = 5
+    pesos = [4, 2, 1, 3, 5]
 
     bolsas_cargadas = bolsas(peso_maximo, pesos)
 

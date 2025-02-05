@@ -19,11 +19,16 @@ Guido. Con eso tengo 2 móviles policiales en bifurcaciones que cubren todas los
 se consideren las bifurcaciones de Castelli, Gral Guido y Sevigne, la única solución óptima sería colocar un móvil policial en Sevigne.
 
 Resolucion:
-Nuestra regla Greedy sera: " "
+Nuestra regla Greedy sera: "Colocar un patrullero en la bifurcación más alejada dentro del rango de 50 km desde la última posición cubierta"
+Este algoritmo encuentra siempre la solución óptima porque estamos cubriendo las bifurcaciones en el menor número de patrulleros posible, comenzando con la 
+colocación del patrullero más alejado dentro del rango de cobertura.
+
+Este es un algoritmo Greedy porque toma decisiones locales óptimas en cada paso (colocar el patrullero en la bifurcación más alejada dentro del rango de cobertura) con la 
+esperanza de que estas decisiones locales conduzcan a una solución global óptima (cubrir todas las bifurcaciones con el menor número de patrulleros).
 
 Lo que se hace...
 
-La complejidad algoritmica es del orden de: 
+La complejidad algoritmica es del orden de: O(n log n)
 """
 
 def bifurcaciones_con_patrulla(ciudades):
@@ -45,8 +50,10 @@ def bifurcaciones_con_patrulla(ciudades):
         resultado.append(patrullero)
 
         # Avanzo el índice más allá del rango cubierto por el patrullero
-        while i < cantidad_ciudades and ciudades_ordenadas[i][1] <= patrullero[1] + 50:
-            i += 1
+        while j < cantidad_ciudades and ciudades_ordenadas[j][1] <= patrullero[1] + 50:
+            j += 1
+
+        i = j #Actualizo el indice.
 
     return resultado
 
