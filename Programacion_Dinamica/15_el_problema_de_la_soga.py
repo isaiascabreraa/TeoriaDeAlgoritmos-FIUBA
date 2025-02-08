@@ -1,7 +1,7 @@
 
 """
 Problema 15:
-Dada una soga de n metros (n mayor o igual a 2) implementar un algoritmo que, utilizando programación dinámica, permita cortarla (en partes 
+Dada una soga de n metros (n >= 2) implementar un algoritmo que, utilizando programación dinámica, permita cortarla (en partes 
 de largo entero) de manera tal que el producto del largo de cada una de las partes resultantes sea máximo. El algoritmo debe devolver el valor 
 del producto máximo alcanzable. Tener en cuenta que la soga puede cortarse varias veces, como se muestra en el ejemplo con n = 10.
 

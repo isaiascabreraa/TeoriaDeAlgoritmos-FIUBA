@@ -5,7 +5,11 @@ Implementar un algoritmo Greedy que devuelva el cambio pedido, usando la mínima
 monetario, y la cantidad de cambio objetivo a dar, y debe devolver qué monedas/billetes deben ser utilizados para minimizar la cantidad total utilizada. 
 
 Resolucion:
-Nuestra regla Greedy será: "Emplearemos los billetes de mayor denominacion primero".
+Nuestra regla Greedy será: "Emplearemos los billetes de mayor denominacion primero". El algoritmo no siempre garantiza la solución óptima. Depende del sistema 
+monetario utilizado como en el caso de tener [1, 3, 4] y que el cambio a devolver sea 6. En ese caso, nuestro algoritmo nos dirá que la solucion es [4, 1, 1] pero 
+realmente la solución optima es [3, 3].
+Es un algoritmo greedy porque en cada paso elige la moneda o billete de mayor denominación posible sin considerar decisiones futuras.
+
 
 Lo que se hace es ver el monto, tomar el billete mas grande que pueda y dividirlo por el mismo. Si el la division me da mayor que 1, me alcanza con ese billete y me quedo 
 solo con la parte entera. Luego agrego a mi vector 'vuelto' la denominacion de la moneda una cantidad de n veces (parte entera) y por ultimo resto la cantidad de divisas 

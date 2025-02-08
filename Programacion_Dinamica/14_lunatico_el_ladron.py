@@ -11,54 +11,12 @@ le daría tiempo a luego intentar robarles a ellos. Es decir, para robar una cas
 cuáles casas debería atracar y cuál sería la ganancia máxima obtenible. Dado que nosotros nos llevamos un porcentaje de dicha ganancia, vamos a buscar el óptimo a 
 este problema. Implementar un algoritmo que, por programación dinámica, obtenga la ganancia óptima, así como cuáles casas habría que robar, a partir de recibir un 
 arreglo de las ganancias obtenibles.
+
+Complejidad algoritmica: O(n).El algoritmo solo hace un recorrido lineal en cada una de las dos ejecuciones de la función de programación dinámica. No hay 
+anidación de bucles ni operaciones cuadráticas o exponenciales, lo que asegura que el tiempo de ejecución crece de manera lineal con el tamaño de la entrada.
 """
 
-"""def lunatico(ganancias):
-    n = len(ganancias)
-
-    # Manejo de casos base
-    if n == 0:
-        return []
-    elif n == 1:
-        return [0]  # Solo se puede robar la casa 0
-    elif n == 2:
-        return [0] if ganancias[0] >= ganancias[1] else [1]  # Elegir la de mayor ganancia
-
-    # Arreglos para almacenar las mejores ganancias y las casas robadas
-    mejor_ganancia = [0] * n
-    casas_robadas = [0] * n
-
-    mejor_ganancia[0] = ganancias[0]
-    casas_robadas[0] = 0
-
-    mejor_ganancia[1] = max(ganancias[0], ganancias[1])
-    casas_robadas[1] = 0 if ganancias[0] >= ganancias[1] else 1
-
-    for i in range(2, n):
-        ganancia_con_casa_actual = ganancias[i] + mejor_ganancia[i - 2]
-        ganancia_sin_casa_actual = mejor_ganancia[i - 1]
-
-        if ganancia_con_casa_actual > ganancia_sin_casa_actual:
-            mejor_ganancia[i] = ganancia_con_casa_actual
-            casas_robadas[i] = i
-        else:
-            mejor_ganancia[i] = ganancia_sin_casa_actual
-            casas_robadas[i] = casas_robadas[i - 1]  # Mantener la casa robada anterior
-
-    # Reconstrucción de la solución
-    resultado = []
-    i = n - 1
-    while i >= 0:
-        if casas_robadas[i] == i:
-            resultado.append(i)  # Agregar la casa robada
-            i -= 2  # Saltar la casa vecina
-        else:
-            i -= 1  # Pasar a la casa anterior
-
-    resultado.reverse()  # Invertir para mantener el orden original
-    return resultado"""
-
-def calcular_mejor_ganancia(ganancias):
+def lunatico_dinamico(ganancias):
     n = len(ganancias)
     if n == 0:
         return []
@@ -84,6 +42,9 @@ def calcular_mejor_ganancia(ganancias):
             mejor_ganancia[i] = ganancia_sin_casa_actual
             casas_robadas[i] = casas_robadas[i - 1]
 
+    return reconstruir_solucion(casas_robadas, n)
+
+def reconstruir_solucion(casas_robadas, n):
     resultado = []
     i = n - 1
     while i >= 0:
@@ -102,11 +63,11 @@ def lunatico(ganancias):
         return [0]
     
     # Escenario 1: Excluyendo la última casa
-    resultado_1 = calcular_mejor_ganancia(ganancias[:-1])
+    resultado_1 = lunatico_dinamico(ganancias[:-1])
     ganancia_1 = sum(ganancias[i] for i in resultado_1)
     
     # Escenario 2: Excluyendo la primera casa
-    resultado_2 = calcular_mejor_ganancia(ganancias[1:])
+    resultado_2 = lunatico_dinamico(ganancias[1:])
     resultado_2 = [i + 1 for i in resultado_2]
     ganancia_2 = sum(ganancias[i] for i in resultado_2)
     
@@ -115,41 +76,10 @@ def lunatico(ganancias):
 
 def main():
 
-    # Ejemplo 1: Ganancias crecientes
-    ganancias1 = [1, 2, 3, 4, 5]
-    #[1,2,4,6,9] [0,0,0,0,0]
-    casas_robadas1 = lunatico(ganancias1)
-    print(f"Casas robadas (ganancias crecientes): {casas_robadas1}")
+    ganancias = [2, 7, 9, 3, 1, 8]
+    casas_robadas = lunatico(ganancias)
+    print(f"Casas robadas: {casas_robadas}")
 
-    # Ejemplo 2: Ganancias decrecientes
-    ganancias2 = [5, 4, 3, 2, 1]
-    casas_robadas2 = lunatico(ganancias2)
-    print(f"Casas robadas (ganancias decrecientes): {casas_robadas2}")
-
-    # Ejemplo 3: Alternando ganancias altas y bajas
-    ganancias3 = [2, 7, 9, 3, 1, 8]
-    casas_robadas3 = lunatico(ganancias3)
-    print(f"Casas robadas (altas y bajas): {casas_robadas3}")
-
-    # Ejemplo 4: Solo una casa
-    ganancias4 = [10]
-    casas_robadas4 = lunatico(ganancias4)
-    print(f"Casas robadas (solo una casa): {casas_robadas4}")
-
-    # Ejemplo 5: Sin ganancias
-    ganancias5 = []
-    casas_robadas5 = lunatico(ganancias5)
-    print(f"Casas robadas (sin ganancias): {casas_robadas5}")
-
-    # Ejemplo 6: Patrón más complejo
-    ganancias6 = [1, 100, 1, 100, 1]
-    casas_robadas6 = lunatico(ganancias6)
-    print(f"Casas robadas (patrón complejo): {casas_robadas6}")
-
-    #Ejemplo 7: Patron variado
-    ganancias7 = [2, 3, 7, 5, 1, 8]
-    casas_robadas7 = lunatico(ganancias7)
-    print(f"Casas robadas (patrón variado): {casas_robadas7}")
 
 if __name__ == "__main__":
     main()
