@@ -1,4 +1,11 @@
 
+"""
+Problema 07:
+
+Resolucion:
+
+La complejidad algoritmica es del orden de:
+"""
 
 def puntos_mas_cercanos_rec(puntos_x, puntos_y):
 

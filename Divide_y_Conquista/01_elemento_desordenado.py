@@ -1,6 +1,19 @@
 
+"""
+Problema 01: Implementar, por división y conquista, una función que dado un arreglo sin elementos repetidos y casi ordenado (todos los elementos se encuentran ordenados, salvo 
+uno), obtenga el elemento fuera de lugar. Indicar y justificar el orden.
+
+Resolucion: Comienza buscando en la primera mitad del arreglo si el valor actual es menor que el anterior o mayor que el siguiente. De no encontrar nada en la primer mitad,
+continua buscando en la segunda.
+
+La complejidad algoritmica es del orden de: O(n) ya que empleando el teorema maestro tenemos un problema que dividimos en cada paso a la mitad por lo que B = 2, A = 2 ya 
+que hacemos 2 llamados recursivos por cada llamada a la funcion y f(n) = 1 por lo que C = 0 ya que todas las demas operaciones son O(1). Con estos datos podemos plantear
+que T(n) = 2T(n/2) + O(1), lo cual implica que como Log2(2) = 1 y C = 0, entonces estamos en el caso 3 en donde logB(A) = C por lo que la complejidad es O(n).
+"""
+
+
 def busqueda_elemento_desordenado(arr, inicio, fin):
-    if inicio > fin:
+    if inicio > fin: #No encontró el elemento
         return None
     
     mitad = (inicio + fin) // 2
