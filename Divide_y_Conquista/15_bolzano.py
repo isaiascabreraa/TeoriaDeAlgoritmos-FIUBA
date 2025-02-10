@@ -8,32 +8,36 @@ y devuelva una raíz dentro de dicho intervalo (si hay más de una, simplemente 
 intervalo [a, b]. Asumir que por más que se esté trabajando con números enteros, hay raíz en dichos valores: Se puede trabajar con floats, y el algoritmo será equivalente, 
 simplemente se plantea con ints para no generar confusiones con la complejidad. Justificar la complejidad de la función implementada.
 
-Resolucion:
+Resolucion: Para encontrar la raiz (valor para el cual f(c) = 0 en donde C se encuentra entre A y B) primero corroboramos que se cumplan las condiciones para aplicar el
+teorema de Bolzano: Si al multiplicar f(a) * f(b) nos da algo mayor que cero quiere decir o bien que ambos son negativo o ambos positivos por lo que no se cumpla que
+a sea positivo y b negativo (o viceversa).
+A continuacion dividimos el problema a la mitad y corroboramos que ese valor no sea una raiz. Si no lo es, evaluo si f(a) * f(mitad) tienen el mismo signo ya que si lo 
+tienen entonces significa que la raiz se encuentra en la otra mitad del arreglo; y de forma similar proceso para corroborar en el lado derecho. De esta forma voy 
+dividiendo el problema a la mitad hasta encontrar la raiz.
 
-La complejidad algoritmica es del orden de: O(log)
+
+La complejidad algoritmica es del orden de: O(log) debido a que A = 1 ya que hay solo un llamado recursivo, B = 2 porque el problema se divide siempre a la mitad y 
+C = 0 ya que todas las demas operaciones son O(1). De esta forma obtengo el caso 2 donde  LogB(A) = C y 0 = 0 por lo que mi complejidad es O(n^C * log n) = O(log n).
 """
 
 def raiz(funcion, a, b):
-    if funcion(a) == 0:
-        return a
-    elif funcion(b) == 0:
-        return b
+    if not funcion:
+        return None
     
-    while a <= b:
-        centro = (a + b) / 2
+    valor_a = funcion(a)
+    valor_b = funcion(b)
+    if valor_a * valor_b > 0:
+        return None
 
-        if funcion(centro) == 0:
-            return centro
+    mitad = (a + b) / 2
 
-        if (funcion(a) > 0 and funcion(centro) < 0) or (funcion(a) < 0 and funcion(centro) > 0):
-            b = centro
-        else:
-            a = centro
+    if funcion(mitad) == 0:
+        return mitad
 
-        if abs(a - b) < 1e-7:
-            return centro
-
-    return None
+    if valor_a * funcion(mitad) < 0:
+        return raiz(funcion, a, mitad)
+    else:
+        return raiz(funcion, mitad, b)
 
 def main():
     a = 1
