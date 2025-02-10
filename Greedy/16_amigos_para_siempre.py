@@ -1,41 +1,52 @@
 
+"""
+Problema 16:
+El club de Amigos de Siempre prepara una cena en sus instalaciones en la que desea invitar a la máxima cantidad de sus n socios. Sin embargo por protocolo cada persona 
+invitada debe cumplir un requisito: Sólo puede ser invitada si conoce a al menos otras 4 personas invitadas. Dada un lista de tuplas (duplas) de personas que se conocen:
+a. Nos solicitan seleccionar el mayor número posible de invitados. 
+b. Proponer una estrategia greedy óptima para resolver el problema.
+
+Resolucion:
+Nuestra regla Greedy sera: "...". Si, siempre es optimo ya que ...
+El algoritmo es considerado Greedy porque ...
+
+La complejidad algoritmica es del orden de: ...
+"""
+
 # conocidos: lista de pares de invitados que se conocen, cada elemento es un (a,b)
 from lib.grafo import Grafo
 
 def obtener_invitados(conocidos):
-    
-    grafo1 = Grafo()
-    for (a,b) in conocidos:
-        if not a in grafo1:
-            grafo1.agregar_vertice(a)
 
-        if not b in grafo1:
-            grafo1.agregar_vertice(b)
+    grafo = Grafo()
+    vertices = grafo.obtener_vertices()
 
-        if not grafo1.estan_unidos(a,b):
-            grafo1.agregar_arista(a,b)
+    for (conocido1, conocido2) in conocidos:
+        if conocido1 not in vertices:
+            grafo.agregar_vertice(conocido1)
+        if conocido2 not in vertices:
+            grafo.agregar_vertice(conocido2)
+
+        if not grafo.estan_unidos(conocido1, conocido2):
+            grafo.agregar_arista(conocido1, conocido2)
 
     cambio = True
-    invitados = []
-    vertices = grafo1.obtener_vertices()
-
     while cambio:
         cambio = False
-        for v in vertices:
-
-            if v not in grafo1:
-                continue
-
-            if len(grafo1.adyacentes(v)) < 4:
+        borrar= []
+        for vertice in vertices:
+            if len(grafo.adyacentes(vertice)) < 4:
+                borrar.append(vertice)
                 cambio = True
-                for w in grafo1.adyacentes(v):
-                    grafo1.borrar_arista(v,w)
-                grafo1.borrar_vertice(v)
+        for vertice in borrar:
+            grafo.borrar_vertice(vertice)
 
-    for v in grafo1:
-        invitados.append(v)
+    resultado = []
 
-    return invitados
+    for vertice in grafo.obtener_vertices():
+        resultado.append(vertice)
+
+    return resultado
 
 def main():
     conocidos = [

@@ -1,5 +1,4 @@
 
-
 """
 Problema 15:
 Se tiene una colección de n libros con diferentes espesores, que pueden estar entre 1 y n (valores no necesariamente enteros). Tu objetivo es guardar esos libros en la menor 

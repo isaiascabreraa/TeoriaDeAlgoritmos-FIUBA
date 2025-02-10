@@ -15,9 +15,8 @@ afectará la distribución de los faros en pasos futuros.
 A grandes rasgos lo que se hace es contar submarinos cercanos a cada celda de la matriz (considerando un radio de 2 celdas), seleccionar la celda que ilumina la mayor 
 cantidad de subamrinos, colocar el faro en esa celda y marcar las celdas iluminadas (eliminando submarinos). Esto lo repite hasta que no queden submarinos.
 
-La complejidad algoritmica es del orden de: O(nm) ⋅ O(nm) = O((nm))²
+La complejidad algoritmica es del orden de: O( S * nm) en donde S es la cantidad de submarinos, n las filas del tablero y m las columnas del mismo.
 """
-
 
 # devolver una lista de faros. Cada faro debe ser una tupla con su posición en (x,y)
 # matriz booleana, indica True en las posiciones con submarinos
