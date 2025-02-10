@@ -1,5 +1,4 @@
 
-
 """
 Problema 15: 
 Se sabe, por el teorema de Bolzano, que si una función es continua en un intervalo [a, b], y que en el punto a es positiva y en el punto b es negativa (o viceversa), 
