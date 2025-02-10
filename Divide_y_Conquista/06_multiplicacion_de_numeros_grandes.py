@@ -10,7 +10,7 @@ combinan usando una fórmula específica de Karatsuba, que evita el cálculo de 
 
 La complejidad algoritmica es del orden de: O(n^1,6) ya que empleando el teorema maestro tenemos un problema que dividimos en cada paso a la mitad por lo que B = 2, A = 3 
 ya que hacemos tres llamados recursivos por cada llamada a la funcion y f(n) = O(n) por lo que C = 1. Con estos datos podemos plantear que T(n) = 3T(n/2) + O(n), lo cual implica 
-que como Log2(3) ~= 1.58 y C = 1, entonces estamos en el caso 2 en donde logB(A) > C por lo que la complejidad es O(n^1.6).
+que como Log2(3) ~= 1.58 y C = 1, entonces estamos en el caso 3 en donde logB(A) > C por lo que la complejidad es O(n^1.6).
 """
 
 def multiplicar(a, b):
