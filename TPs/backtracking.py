@@ -1,5 +1,5 @@
-
 import time
+from utils import generar_barcos_random
 
 #Funciones Auxiliares
 def imprimir_tablero(tablero):
@@ -9,27 +9,6 @@ def imprimir_tablero(tablero):
 
 def imprimir_demandas(demanda_filas_actual, demanda_columnas_actual):
     print(f"La demanda de filas es: {demanda_filas_actual} y la demanda de columnas es: {demanda_columnas_actual}")
-
-def leer_datos(filename):
-    with open(filename, 'r') as file:
-        lineas = file.readlines()
-
-    secciones = [[]]
-    seccion_actual = 0
-    for linea in lineas: 
-        if not linea.startswith('#'):
-            if linea == '\n':
-                seccion_actual += 1
-                secciones.append([])
-            else:
-                secciones[seccion_actual].append(linea.strip())
-
-    print(f"{secciones}\n")
-    requisitos_filas = [int(valor) for valor in secciones[0]]
-    requisitos_columnas = [int(valor) for valor in secciones[1]]
-    barcos = [int(valor) for valor in secciones[2]]
-
-    return requisitos_filas, requisitos_columnas, barcos
 
 #Pre: -
 #Post: -
@@ -191,6 +170,7 @@ def contar_demandas_satisfechas(demanda_filas, demanda_columnas, demanda_total):
 #Pre: -
 #Post: -
 def backtracking_batalla_naval(tablero, mejor_tablero, fila, columna, demanda_filas, demanda_columnas, barcos, mejor_demanda, demanda_satisfecha, demanda_total):
+
     if not barcos:
         return mejor_tablero, mejor_demanda
 
@@ -202,19 +182,19 @@ def backtracking_batalla_naval(tablero, mejor_tablero, fila, columna, demanda_fi
     demanda_maxima_posible = sum(barcos) * 2 + demanda_satisfecha
     if demanda_maxima_posible <= mejor_demanda:
         return mejor_tablero, mejor_demanda
-    
+
     for i in range(fila, cantidad_filas):
         for j in range(columna if i == fila else 0, cantidad_columnas):
             if demanda_filas[i] == 0 or demanda_columnas[j] == 0:
                 continue
-            
-            for orientacion in ['H', 'V']:
+
+            for orientacion in ['V', 'H']:
                 if es_valida_colocacion(tablero, i, j, barco, orientacion, demanda_filas, demanda_columnas):
                     tablero_actual = colocar_barco(tablero, i, j, barco, orientacion)
                     demanda_filas_actual, demanda_columnas_actual = actualizar_demandas(demanda_filas, demanda_columnas, i, j, barco, orientacion)
                     demanda_actual = contar_demandas_satisfechas(demanda_filas_actual, demanda_columnas_actual, demanda_total)
                     es_posible_colocar = True
-                    
+
                     if demanda_actual > mejor_demanda:
                         mejor_demanda = demanda_actual
                         mejor_tablero = tablero_actual
@@ -237,8 +217,10 @@ def backtracking_batalla_naval(tablero, mejor_tablero, fila, columna, demanda_fi
         if barco == barcos[1] and es_posible_colocar:
             barcos_filtrados = [b for b in barcos if b != barco]
             return backtracking_batalla_naval(tablero, mejor_tablero, 0, 0, demanda_filas, demanda_columnas, barcos_filtrados, mejor_demanda, demanda_satisfecha, demanda_total)
-    
+
     return backtracking_batalla_naval(tablero, mejor_tablero, 0, 0, demanda_filas, demanda_columnas, barcos[1:], mejor_demanda, demanda_satisfecha, demanda_total)
+
+
 
 #Pre: -
 #Post: -
@@ -290,41 +272,23 @@ def filtrar_barcos_imposibles(demanda_filas, demanda_columnas, barcos):
 
 #Pre: -
 #Post: -
-def main():
+def solucion_backtracking(demanda_filas, demanda_columnas, barcos):
+    n = len(demanda_filas)
+    m = len(demanda_columnas)
 
-    file_paths = [
-        "archivos_prueba/3_3_2.txt", #0.0001 segundos [OPTIMO DE: 11 total | 4 satisfecho]
-        "archivos_prueba/5_5_6.txt", #0.0023 segundos [OPTIMO DE: 18 total | 12 satisfecho]
-        "archivos_prueba/8_7_10.txt", #0.0008 segundos [OPTIMO DE: 53 total | 26 satisfecho]
-        "archivos_prueba/10_3_3.txt", #0.0009 segundos [OPTIMO DE: 14 total | 6 satisfecho]
-        "archivos_prueba/10_10_10.txt", #0.009 segundos [OPTIMO DE: 40 total | 40 satisfecho]
-        "archivos_prueba/12_12_21.txt", #0.1519 segundos [OPTIMO DE: 58 total | 46 satisfecho]
-        "archivos_prueba/15_10_15.txt", #0.0018 segundos [OPTIMO DE: 67 total | 40 satisfecho]
-        "archivos_prueba/20_20_20.txt", #0.0110 segundos [OPTIMO DE: 120 total | 104 satisfecho]
-        "archivos_prueba/20_25_30.txt", #0.0122 segundos [OPTIMO DE: 247 total | 172 satisfecho]
-        "archivos_prueba/30_25_25.txt"  #19 segundos [OPTIMO DE: 360 total | 202 satisfecho]
-    ]
+    tablero = [[0 for _ in range(m)] for _ in range(n)]
+    print("Tablero inicial")
+    imprimir_tablero(tablero)
 
-    for file_path in file_paths:
-        demanda_filas, demanda_columnas, barcos = leer_datos(file_path)
-    
-        n = len(demanda_filas)
-        m = len(demanda_columnas)
+    barcos.sort(reverse=True)
+    barcos_procesados = filtrar_barcos_imposibles(demanda_filas, demanda_columnas, barcos)
+    print(f"Barcos antes de procesar: {barcos}. Total: {len(barcos)}")
+    print(f"Barcos luego de procesar: {barcos_procesados}. Total: {len(barcos_procesados)}")
 
-        print(f"\n Tablero: {file_path}")
-        tablero = [[0 for _ in range(m)] for _ in range(n)]
+    inicio = time.time()
+    tablero_obtenido = batalla_naval(tablero, demanda_filas, demanda_columnas, barcos_procesados)
+    fin = time.time()
+    print(f"Tiempo de ejecución: {fin - inicio:.4f} segundos")
 
-        barcos.sort(reverse=True)
-        barcos_procesados = filtrar_barcos_imposibles(demanda_filas, demanda_columnas, barcos)
-        print(f"Barcos antes de procesar: {barcos}. Total: {len(barcos)}")
-        print(f"Barcos luego de procesar: {barcos_procesados}. Total: {len(barcos_procesados)}")
-
-        inicio = time.time()
-        tablero_obtenido = batalla_naval(tablero, demanda_filas, demanda_columnas, barcos_procesados)
-        fin = time.time()
-        print(f"Tiempo de ejecución: {fin - inicio:.4f} segundos")
-        #print("Tablero obtenido")
-        #imprimir_tablero(tablero_obtenido)
-
-if __name__ == "__main__":
-    main()
+    print("Tablero obtenido")
+    imprimir_tablero(tablero_obtenido)
