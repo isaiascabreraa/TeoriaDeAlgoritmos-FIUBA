@@ -19,9 +19,6 @@ Resolucion: Para resolverlo debemos:
 5. De esta manera, si quiero representar la A por ejemplo, debo recorrer el arbol para ver con que bits puedo representarlo y asi, siendo que la A aparece 3 veces, solo necesito 2 bits
     para representarla.
 
-Nota: Si la cantidad de letras es impar, a la primera letra removida del heap no le generamos un padre.
-
-
 Una vez cifrado el codigo, para descifrar este codigo necesitamos el arbol de huffman y realizar el proceso inverso.
 
 Este algoritmo es greedy? Si y mi regla es "Hacer que cueste un caracter mas los caracteres que menos frecuencia acumulen". El codigo de huffman dan siempre la manera mas optima de 
