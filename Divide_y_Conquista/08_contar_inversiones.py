@@ -6,8 +6,7 @@ encuentra desordenado. Indicar, por división y conquista, la cantidad de invers
 complejidad mejor que O(n^2). Justificar el orden del algoritmo mediante el teorema maestro.
 
 Que es una inversion? Dos elementos estan invertidos si bi > bj (con i < j), o sea que es cuando tengo un elemento mas grande antes que uno mas chico. Ahora, si tenemos un 
-arreglo como [2, 4, 1, 3, 5] entonces notemos que 2 esta antes que 1, 4 esta antes que 1 y 4 esta antes que tres, por lo que para ordenar el arreglo debo de realizar un 
-total de tres inversiones.
+arreglo como [2, 4, 1, 3, 5] entonces notemos que 2 esta antes que 1, 4 esta antes que 1 y 3, por lo que para ordenar el arreglo debo de realizar un total de tres inversiones.
 
 Resolucion:
 

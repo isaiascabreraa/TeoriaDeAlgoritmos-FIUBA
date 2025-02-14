@@ -19,7 +19,7 @@ El objetivo es entrelazar ambas mitades sin utilizar espacio adicional. Para log
 
 El patrón que seguimos se puede ver en arreglos pequeños:
 - Para `n = 2`: `{C1, C2, D1, D2}` → `{C1, D1, C2, D2}` (caso base, se mantiene sin cambios).
-- Para `n = 4`: `{C1, C2, C3, C4, D1, D2, D3, D4}` → Intercambiamos `{C2, C3} ↔ {D1, D2}`, aplicamos recursión en ambas mitades.
+- Para `n = 4`: `{C1, C2, C3, C4, D1, D2, D3, D4}` → Intercambiamos `{C3, C4} ↔ {D1, D2}`, aplicamos recursión en ambas mitades.
 - Para `n = 8`: Intercambiamos bloques más grandes y aplicamos recursión.
 
 Este proceso sigue un **árbol de recursión** donde en cada nivel realizamos `O(n)` intercambios, y la profundidad de la recursión es `O(log n)`, ya que en cada paso reducimos el problema a la mitad.
@@ -34,16 +34,22 @@ Aplicando el teorema, tenemos el **caso 2** donde `C = log_B(A)`, lo que resulta
 """
 
 def alternar_rec(arr, inicio, fin):
+    # Caso base: si el tamaño de la sección es 2, no hacemos nada.
     if fin - inicio == 2:
         return
 
+    # Calculamos la mitad de la sección actual.
     n = (fin - inicio) // 2
     mitad = inicio + n // 2
 
+    # Intercambiamos elementos centrales de las dos mitades.
     for i in range(mitad, mitad + n // 2):
+        # Por ejemplo, si arr = [C1, C2, C3, C4, D1, D2, D3, D4] y estamos en la primera llamada recursiva, intercambiamos C3 con D1 y C4 con D2.
         arr[i], arr[i + n // 2] = arr[i + n // 2], arr[i]
 
+    # Llamamos recursivamente sobre la primera mitad.
     alternar_rec(arr, inicio, mitad + n // 2)
+    # Llamamos recursivamente sobre la segunda mitad.
     alternar_rec(arr, mitad + n // 2, fin)
 
 def alternar(arr):

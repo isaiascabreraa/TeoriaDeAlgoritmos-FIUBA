@@ -25,9 +25,9 @@ def multiplicar(a, b):
     parte_superior_b = b // 10**mitad
     parte_baja_b = b % 10**mitad
 
-    producto_baja  = multiplicar(parte_inferior_a, parte_baja_b)
-    producto_alta   = multiplicar(parte_superior_a, parte_superior_b)
-    producto_cruzado   = multiplicar(parte_inferior_a + parte_superior_a, parte_baja_b + parte_superior_b)
+    producto_baja = multiplicar(parte_inferior_a, parte_baja_b)
+    producto_alta = multiplicar(parte_superior_a, parte_superior_b)
+    producto_cruzado = multiplicar(parte_inferior_a + parte_superior_a, parte_baja_b + parte_superior_b)
 
     return producto_alta * 10**(2 * mitad) + (producto_cruzado - producto_alta - producto_baja) * 10**mitad + producto_baja
 

@@ -48,11 +48,13 @@ def puntos_mas_cercanos_rec(puntos_x, puntos_y):
     mejor_pareja = pareja_izq if dist_izq < dist_der else pareja_der
 
 
+    #Tomo todos los puntos del arreglo Y que se encuentren a menor distancia en X de la menor distancia actual al punto medio.
     franja_cercana = [p for p in puntos_y if abs(p[0] - punto_medio) < distancia_min]
     cantidad_franja = len(franja_cercana)
 
-    for i in range(len(cantidad_franja)):
-        for j in range(i + 1, min(i + 7, len(franja_cercana))):
+    #Chequeo si no hay una distancia minima entre los puntos del arreglo en X y el de Y.
+    for i in range(cantidad_franja):
+        for j in range(i + 1, min(i + 7, len(franja_cercana))): #Solo se recorre hasta un maximo de 7 elementos por vez
             distancia_actual = ((franja_cercana[i][0] - franja_cercana[j][0]) ** 2 + (franja_cercana[i][1] - franja_cercana[j][1]) ** 2) ** 0.5
             if distancia_actual < distancia_minima:
                 distancia_minima = distancia_actual

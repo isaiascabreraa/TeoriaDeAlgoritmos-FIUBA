@@ -20,17 +20,23 @@ de O(n^C log n) que en este caso seria O(n log n).
 """
 
 def max_subarray_rec(arr, inicio, fin):
-
+    # Caso base: si inicio es igual a fin, retornamos el único elemento de la subarreglo y el subarreglo que lo contiene.
     if inicio == fin:
         return arr[inicio], [arr[inicio]]
 
+    # Calculamos el punto medio del arreglo.
     medio = (inicio + fin) // 2
+
+    # Llamadas recursivas para encontrar el subarreglo máximo en las mitades izquierda y derecha.
     max_izquierda_suma, subarreglo_max_izquierda = max_subarray_rec(arr, inicio, medio)
     max_derecha_suma, subarreglo_max_derecha = max_subarray_rec(arr, medio + 1, fin)
 
+    # Encontramos el subarreglo máximo que cruza la mitad del arreglo.
     suma_izq = 0
     max_izquierda_cruzando = None
     max_izquierda_index = medio
+
+    #Calculamos la maxima suma contigua partiendo desde el medio y yendo hacia el inicio.
     for i in range(medio, inicio - 1, -1):
         suma_izq += arr[i]
         if max_izquierda_cruzando is None or suma_izq > max_izquierda_cruzando:
@@ -40,14 +46,22 @@ def max_subarray_rec(arr, inicio, fin):
     suma_der = 0
     max_derecha_cruzando = None
     max_derecha_index = medio + 1
+    
+    #Calculamos la maxima suma contigua partiendo desde el medio y yendo hacia el fin.
     for i in range(medio + 1, fin + 1):
         suma_der += arr[i]
         if max_derecha_cruzando is None or suma_der > max_derecha_cruzando:
             max_derecha_cruzando = suma_der
             max_derecha_index = i
 
-    max_suma = max(max_izquierda_suma, max_derecha_suma, (max_izquierda_cruzando or 0) + (max_derecha_cruzando or 0))
+    #Sumamos el maximo de la izquierda con el de la derecha.
+    max_cruzado =  (max_izquierda_cruzando or 0) + (max_derecha_cruzando or 0)
 
+    # Comparamos las tres posibilidades: el máximo subarreglo en la izquierda,
+    # el máximo subarreglo en la derecha, y el máximo subarreglo que cruza la mitad.
+    max_suma = max(max_izquierda_suma, max_derecha_suma, max_cruzado)
+
+    # Retornamos el máximo subarreglo correspondiente.
     if max_suma == max_izquierda_suma:
         return max_suma, subarreglo_max_izquierda
     
@@ -55,7 +69,8 @@ def max_subarray_rec(arr, inicio, fin):
         return max_suma, subarreglo_max_derecha
     
     else:
-        return (max_izquierda_cruzando or 0) + (max_derecha_cruzando or 0), arr[max_izquierda_index:max_derecha_index + 1]
+        return max_cruzado, arr[max_izquierda_index:max_derecha_index + 1]
+
 
 
 def max_subarray(arr):

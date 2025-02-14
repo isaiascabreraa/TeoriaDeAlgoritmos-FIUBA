@@ -19,10 +19,10 @@ def busqueda_elemento_desordenado(arr, inicio, fin):
     mitad = (inicio + fin) // 2
         
     if mitad > 0 and arr[mitad] < arr[mitad-1]:
-            return arr[mitad-1]
+            return arr[mitad-1] #Quito el desordenado mas a la izquierda.
     
     if mitad < len(arr)-1 and arr[mitad] > arr[mitad + 1]:
-        return arr[mitad]
+        return arr[mitad] #Quite el desordenado mas a la izquierda.
     
     valor_buscado = busqueda_elemento_desordenado(arr, mitad + 1, fin)
     if not valor_buscado:
