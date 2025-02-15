@@ -17,16 +17,14 @@ def bt_camino_hamiltoniano(grafo, camino, visitados, vertice_actual):
     if len(camino) == len(grafo.obtener_vertices()):
         return camino
 
-
     for vecino in grafo.adyacentes(vertice_actual):
 
         if vecino not in visitados:
             visitados.add(vecino)
             camino.append(vecino)
 
-            resultado = bt_camino_hamiltoniano(grafo, camino, visitados, vecino)
-            if resultado:
-                return resultado
+            if bt_camino_hamiltoniano(grafo, camino, visitados, vecino):
+                return camino
 
             visitados.remove(vecino)
             camino.pop()

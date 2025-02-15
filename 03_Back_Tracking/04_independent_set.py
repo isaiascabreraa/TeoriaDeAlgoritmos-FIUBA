@@ -17,9 +17,6 @@ def bt_independent_set(grafo, subconjunto_actual, mejor_subconjunto, vertices, p
     cantidad_vertices = len(vertices)
     for i in range(posicion, cantidad_vertices):
 
-        print(f"Posicion: {i}")
-        print(f"{subconjunto_actual}")
-
         adyacentes = grafo.adyacentes(vertices[i])
         if all(adyacente not in subconjunto_actual for adyacente in adyacentes):
             subconjunto_actual.append(vertices[i])

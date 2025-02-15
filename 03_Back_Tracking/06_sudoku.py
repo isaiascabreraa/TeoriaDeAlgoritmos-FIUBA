@@ -43,12 +43,15 @@ def bt_resolver_sudoku(matriz, tamanio_matriz, tamanio_subgrupo, posicion):
         for k in range(1, tamanio_matriz + 1):
 
             if es_posicion_valida(matriz, tamanio_matriz, tamanio_subgrupo, k, (fila, columna)):
-
                 matriz[fila][columna] = k
+                
                 if bt_resolver_sudoku(matriz, tamanio_matriz, tamanio_subgrupo, posicion + 1):
                     return True
                 
                 matriz[fila][columna] = 0
+
+        return False
+
     else:
         return bt_resolver_sudoku(matriz, tamanio_matriz, tamanio_subgrupo, posicion + 1)
 

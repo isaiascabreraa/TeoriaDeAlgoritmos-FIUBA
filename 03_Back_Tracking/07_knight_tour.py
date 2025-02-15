@@ -24,7 +24,6 @@ def movimientos_posibles_caballo(fila, columna, n, casillas):
         nueva_columna = columna + movimiento[1]
         
         if 0 <= nueva_fila < n and 0 <= nueva_columna < n:
-
             posicion = nueva_fila * n + nueva_columna
 
             if posicion not in casillas:

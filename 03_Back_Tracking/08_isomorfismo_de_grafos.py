@@ -26,22 +26,22 @@ def bt_hay_isomorfismo(g1, g2, vertices_1, vertices_2, asignacion, cantidad_asig
 
     for vertice_2 in vertices_2:
        
-        if vertice_2 not in asignacion.values():
+        if vertice_2 not in asignacion.values(): #Si no hay ninguna clave con el valor del vertice 2...
             asignacion[vertice_1] = vertice_2
 
             es_valido = True
            
             for vertice in g1.adyacentes(vertice_1):
               
-                if vertice in asignacion:
-                    if not g2.estan_unidos(asignacion[vertice], vertice_2):
+                if vertice in asignacion: #Si el vertice actual no es una clave del diccionario...
+                    if not g2.estan_unidos(asignacion[vertice], vertice_2): #Si cuando busco el valor del vertice en la asignacion no me da que este unido al vertice 2...
                         es_valido = False
                         break
 
             if es_valido and bt_hay_isomorfismo(g1, g2, vertices_1, vertices_2, asignacion, cantidad_asignados + 1):
                 return True
 
-            del asignacion[vertice_1]
+            del asignacion[vertice_1] #Quito el vertice
 
     return False
 
@@ -62,7 +62,6 @@ def hay_isomorfismo(g1, g2):
         return False
     
     asignacion = {}
-
     return bt_hay_isomorfismo(g1, g2, vertices_1, vertices_2, asignacion, 0)
      
 
