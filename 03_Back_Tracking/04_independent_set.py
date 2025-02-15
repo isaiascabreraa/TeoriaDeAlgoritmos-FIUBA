@@ -14,9 +14,6 @@ La complejidad algoritmica es del orden de: ...
 #Post: Devuelve una lista con la mayor combinacion posible de vertices tales que ninguno de ellos sea adyacente a los demas.
 def bt_independent_set(grafo, subconjunto_actual, mejor_subconjunto, vertices, posicion):
 
-    if not mejor_subconjunto:
-        mejor_subconjunto = subconjunto_actual[:]
-
     cantidad_vertices = len(vertices)
     for i in range(posicion, cantidad_vertices):
 
@@ -33,7 +30,7 @@ def bt_independent_set(grafo, subconjunto_actual, mejor_subconjunto, vertices, p
     if len(subconjunto_actual) > len(mejor_subconjunto):
         return subconjunto_actual[:]
     else:
-        return mejor_subconjunto[:]
+        return mejor_subconjunto
 
 
 def independent_set(grafo):

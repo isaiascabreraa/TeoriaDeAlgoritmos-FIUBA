@@ -39,6 +39,7 @@ def minimizar_latencia(L_deadline, T_tareas):
 
     for i in range(len(L_deadline)): #Las acomodo un poco para que sea mas comodo.
         scheduling_ordenado.append((T_tareas[i], L_deadline[i]))
+        
     scheduling_ordenado = sorted(scheduling_ordenado, key=lambda x: x[1])
     
     for i in range(len(scheduling_ordenado)):

@@ -46,7 +46,7 @@ def submarinos(matriz):
     n = len(matriz)
     m = len(matriz[0])
 
-    while any(any(row) for row in matriz):
+    while any(any(row) for row in matriz): #Mientras haya celdas con valor True.
         max_submarinos = 0
         mejor_posicion = None
 
@@ -60,7 +60,7 @@ def submarinos(matriz):
         if mejor_posicion:
             x, y = mejor_posicion
             faros.append((x, y))
-            iluminar(matriz, x, y)
+            iluminar(matriz, x, y) #Cambio los True por False.
 
     return faros
 

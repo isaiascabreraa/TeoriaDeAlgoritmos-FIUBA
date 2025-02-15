@@ -7,7 +7,7 @@ a. Nos solicitan seleccionar el mayor número posible de invitados.
 b. Proponer una estrategia greedy óptima para resolver el problema.
 
 Resolucion:
-Nuestra regla Greedy sera: "...". Si, siempre es optimo ya que ...
+Nuestra regla Greedy sera: "Eliminar iterativamente a las personas que conocen menos de 4". Si, siempre es optimo ya que ...
 El algoritmo es considerado Greedy porque ...
 
 La complejidad algoritmica es del orden de: ...
@@ -37,12 +37,11 @@ def obtener_invitados(conocidos):
         for vertice in vertices:
             if len(grafo.adyacentes(vertice)) < 4:
                 borrar.append(vertice)
-                cambio = True
+                cambio = True #Si saco uno, debo volver a chequear a los demas ya que los que antes podian conocer a 4, ahora pueden llegar a conocer solo 3.
         for vertice in borrar:
             grafo.borrar_vertice(vertice)
 
     resultado = []
-
     for vertice in grafo.obtener_vertices():
         resultado.append(vertice)
 

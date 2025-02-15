@@ -19,9 +19,8 @@ Guido. Con eso tengo 2 móviles policiales en bifurcaciones que cubren todas los
 se consideren las bifurcaciones de Castelli, Gral Guido y Sevigne, la única solución óptima sería colocar un móvil policial en Sevigne.
 
 Resolucion:
-Nuestra regla Greedy sera: "Colocar un patrullero en la bifurcación más alejada dentro del rango de 50 km desde la última posición cubierta"
-Este algoritmo encuentra siempre la solución óptima porque estamos cubriendo las bifurcaciones en el menor número de patrulleros posible, comenzando con la 
-colocación del patrullero más alejado dentro del rango de cobertura.
+Nuestra regla Greedy sera: "Visitar primero las intersecciones con menor kilometraje" Este algoritmo encuentra siempre la solución 
+óptima porque estamos cubriendo las bifurcaciones en el menor número de patrulleros posible, comenzando con la colocación del patrullero más alejado dentro del rango de cobertura.
 
 Este es un algoritmo Greedy porque toma decisiones locales óptimas en cada paso (colocar el patrullero en la bifurcación más alejada dentro del rango de cobertura) con la 
 esperanza de que estas decisiones locales conduzcan a una solución global óptima (cubrir todas las bifurcaciones con el menor número de patrulleros).

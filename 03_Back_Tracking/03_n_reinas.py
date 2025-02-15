@@ -66,7 +66,7 @@ def colocar_nreinas(tablero, n, n_reinas, posicion):
                 n_reinas.append((i, j))
 
                 resultado = colocar_nreinas(tablero, n, n_reinas, (i, j + 1))
-                if len(resultado) == n:
+                if len(n_reinas) == n:
                     return resultado
 
                 n_reinas.pop()

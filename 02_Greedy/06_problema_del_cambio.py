@@ -15,8 +15,8 @@ Lo que se hace es ver el monto, tomar el billete mas grande que pueda y dividirl
 solo con la parte entera. Luego agrego a mi vector 'vuelto' la denominacion de la moneda una cantidad de n veces (parte entera) y por ultimo resto la cantidad de divisas 
 empleadas al resto actual para la siguiente iteracion. Hago lo mismo hasta llegar al monto total o quedarme sin divisas.
 
-La complejidad algoritmica es del orden de: O(n²) ya que en el peor caso debo recorrer toda la lista de divisas monetarias (O(n)) y por cada una de esas divisas debo de 
-agregarlas al vector la cantidad de veces que estas se emplean (O(n)).
+La complejidad algoritmica es del orden de: O(n*m) ya que en el peor caso debo recorrer toda la lista de divisas monetarias (O(n)) y por cada una de esas divisas debo de 
+agregarlas al vector la cantidad de veces que estas se emplean (O(n*m)).
 
 """
 
@@ -32,7 +32,7 @@ def cantidad_minima_monedas(monedas, monto):
         costo = resto / monedas[indice]
         if costo >= 1:
             cantidad = int(costo)
-            for _ in range(cantidad): #O(n)
+            for _ in range(cantidad): #O(m)
                 vuelto.append(monedas[indice])
 
             resto = resto - cantidad * monedas[indice]
