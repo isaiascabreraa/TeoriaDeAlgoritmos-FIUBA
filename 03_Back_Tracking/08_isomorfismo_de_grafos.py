@@ -33,8 +33,9 @@ def bt_hay_isomorfismo(g1, g2, vertices_1, vertices_2, asignacion, cantidad_asig
            
             for vertice in g1.adyacentes(vertice_1):
               
-                if vertice in asignacion: #Si el vertice actual no es una clave del diccionario...
-                    if not g2.estan_unidos(asignacion[vertice], vertice_2): #Si cuando busco el valor del vertice en la asignacion no me da que este unido al vertice 2...
+                if vertice in asignacion:
+                    #Chequeo que todos los adyacentes a V1 se encuentren unidos a V2 (si no lo estan no son isomorfos).
+                    if not g2.estan_unidos(asignacion[vertice], vertice_2):
                         es_valido = False
                         break
 

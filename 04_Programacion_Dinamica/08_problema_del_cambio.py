@@ -48,6 +48,15 @@ def cambio(monedas, monto):
 def cambio_dinamico(monedas, monto):
    
     M_CAMBIO = [0] * (monto + 1)
+
+    """
+    Inicializo mi vector del tamaño del monto total con ceros y resuelvo caso por caso desde el monto 0 hasta el monto recibido.
+    Por cada monto itero probando si puedo logarlo con la divisa actual. Si no es posible va un -1, si es posible pongo la cantidad
+    de monedas necesarias para lograr el monto que tendriamos si al monto actual le quito la moneda actual. A esto le agrego valor + 1 
+    correspondiente a emplear la divisa actual (ya que mi vector contiene la cantidad de divisas empleadas y NO cuales).
+
+    Si el monto actual menos la divisa es -1 entonces no califica y el valor en el vector será -1, indicando que es imposible lograrlo.
+    """
     
     for i in range(1, monto + 1):
         mejor_opcion = -1

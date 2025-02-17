@@ -12,29 +12,35 @@ La complejidad algoritmica es del orden de: ...
 
 from lib.grafo import Grafo
 
-def contiene_aristas(grafo, subconjunto, aristas):
+def contiene_aristas(subconjunto, aristas):
     if not aristas:
-        return not subconjunto 
-    else:
-        aristas_actuales = set([(min(v, w), max(v, w)) for v in subconjunto for w in grafo.adyacentes(v)])
-        return aristas == aristas_actuales
+        return not subconjunto  # Si no hay aristas, el subconjunto debe estar vacío para ser válido
+
+    vertices_en_subconjunto = set(subconjunto)
+
+    for v, w in aristas: #Por cada vertice unido por una arista, chequeo si uno de los dos vertices se encuentra en el subconjunto.
+        if v not in vertices_en_subconjunto and w not in vertices_en_subconjunto:
+            return False  # Falta cubrir esta arista
+
+    return True  # Todas las aristas tienen al menos un extremo en el subconjunto
+
 
 def vertex_cover(grafo, subconjunto, mejor_subconjunto, index, aristas, vertices):
-
+    
     if mejor_subconjunto and len(subconjunto) >= len(mejor_subconjunto):
-        return mejor_subconjunto
+        return mejor_subconjunto  # Podamos ramas innecesarias si ya superamos la mejor solución conocida
 
     for i in range(index, len(vertices)):
         vertice_actual = vertices[i]
-        nuevo_subconjunto = subconjunto + [vertice_actual]
+        subconjunto.append(vertice_actual)
 
-        print(f"Subconjunto: {nuevo_subconjunto}")
+        if contiene_aristas(subconjunto, aristas):
+            if not mejor_subconjunto or len(subconjunto) < len(mejor_subconjunto):
+                mejor_subconjunto = subconjunto  # Actualizamos la mejor solución encontrada
+        else:
+            mejor_subconjunto = vertex_cover(grafo, subconjunto, mejor_subconjunto, i + 1, aristas, vertices)
 
-        if not contiene_aristas(grafo, nuevo_subconjunto, aristas):
-            mejor_subconjunto = vertex_cover(grafo, nuevo_subconjunto, mejor_subconjunto, i + 1, aristas, vertices)
-            
-        elif len(nuevo_subconjunto) < len(mejor_subconjunto) or not mejor_subconjunto:
-            mejor_subconjunto = nuevo_subconjunto
+        subconjunto.pop()
 
     return mejor_subconjunto
 
@@ -44,6 +50,8 @@ def vertex_cover_min(grafo):
         return []
     
     vertices = grafo.obtener_vertices()
+
+    #Set de par de vertices unidos por una arista.
     aristas = set([(min(v, w), max(v, w)) for v in grafo.obtener_vertices() for w in grafo.adyacentes(v)])
 
     subconjunto_buscado = vertex_cover(grafo, [], [], 0, aristas, vertices)

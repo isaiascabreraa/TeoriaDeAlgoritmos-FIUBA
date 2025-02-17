@@ -16,45 +16,39 @@ Complejidad algoritmica: O(n).El algoritmo solo hace un recorrido lineal en cada
 anidación de bucles ni operaciones cuadráticas o exponenciales, lo que asegura que el tiempo de ejecución crece de manera lineal con el tamaño de la entrada.
 """
 
+def reconstruir_solucion(M_JOB, ganancias, n):
+    j = n
+    casas_robadas = []
+
+    while j > 0:
+        if j == 1 or (j > 1 and M_JOB[j] == M_JOB[j - 2] + ganancias[j - 1]):
+            casas_robadas.append(j - 1)
+            j -= 2
+        else:
+            j -= 1
+
+    return casas_robadas[::-1]
+
+
 def lunatico_dinamico(ganancias):
+
     n = len(ganancias)
+    
     if n == 0:
         return []
+    
     elif n == 1:
         return [0]
-    elif n == 2:
-        return [0] if ganancias[0] >= ganancias[1] else [1]
     
-    mejor_ganancia = [0] * n
-    casas_robadas = [0] * n
-    mejor_ganancia[0] = ganancias[0]
-    casas_robadas[0] = 0
-    mejor_ganancia[1] = max(ganancias[0], ganancias[1])
-    casas_robadas[1] = 0 if ganancias[0] >= ganancias[1] else 1
+    M_GANANCIA = [0] * (n + 1)
+    M_GANANCIA[1] = ganancias[0]
 
-    for i in range(2, n):
-        ganancia_con_casa_actual = ganancias[i] + mejor_ganancia[i - 2]
-        ganancia_sin_casa_actual = mejor_ganancia[i - 1]
-        if ganancia_con_casa_actual > ganancia_sin_casa_actual:
-            mejor_ganancia[i] = ganancia_con_casa_actual
-            casas_robadas[i] = i
-        else:
-            mejor_ganancia[i] = ganancia_sin_casa_actual
-            casas_robadas[i] = casas_robadas[i - 1]
+    for i in range(2, n + 1):
+        M_GANANCIA[i] = max(M_GANANCIA[i - 1], M_GANANCIA[i - 2] + ganancias[i - 1])
 
-    return reconstruir_solucion(casas_robadas, n)
+    return reconstruir_solucion(M_GANANCIA, ganancias, n)
 
-def reconstruir_solucion(casas_robadas, n):
-    resultado = []
-    i = n - 1
-    while i >= 0:
-        if casas_robadas[i] == i:
-            resultado.append(i)
-            i -= 2
-        else:
-            i -= 1
-    resultado.reverse()
-    return resultado
+
 
 def lunatico(ganancias):
     if not ganancias:
@@ -68,7 +62,7 @@ def lunatico(ganancias):
     
     # Escenario 2: Excluyendo la primera casa
     resultado_2 = lunatico_dinamico(ganancias[1:])
-    resultado_2 = [i + 1 for i in resultado_2]
+    resultado_2 = [i + 1 for i in resultado_2] #Ajusta los indices ya que excluimos la casa 1.
     ganancia_2 = sum(ganancias[i] for i in resultado_2)
     
     return resultado_1 if ganancia_1 > ganancia_2 else resultado_2

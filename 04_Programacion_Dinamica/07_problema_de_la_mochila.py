@@ -44,6 +44,8 @@ def mochila_dinamica(elementos, cantidad_elementos, W):
             if elementos[i - 1][1] <= j:
                 M_OPTIMOS[i][j] = max(
                     M_OPTIMOS[i - 1][j],  # No incluyo el elemento
+
+                    #Sumo el mayor valor obtenido cuando el peso era peso actual menos peso del objeto actual y le sumo el valor del objeto actual.
                     M_OPTIMOS[i - 1][j - elementos[i - 1][1]] + elementos[i - 1][0]  # Incluyo el elemento
                 )
             else:

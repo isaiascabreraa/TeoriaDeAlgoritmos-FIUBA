@@ -57,6 +57,8 @@ def juan_el_vago_dinamico(trabajos, ganancias, n):
 
     if n > 0:
         M_JOBS[1] = trabajos[0]
+
+    if n > 1:
         M_JOBS[2] = max(trabajos[0], trabajos[1])
 
     if n > 2:

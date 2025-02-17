@@ -8,30 +8,39 @@ pueden sentarse. Implementar un algoritmo que, mediante programación dinámica,
 la mesa (o en otras palabras, que dejan la menor cantidad de espacios vacíos).
 """
 
-def resolver_dinamico(P, W):
+def resolver_dinamico(grupo, capacidad):
 
-    n = len(P)
+    def calcular_min_operaciones(k):
+    # Inicializa la tabla para almacenar el mínimo de operaciones
+    M_OPERACIONES = [None] * (k + 1)
+    secuencia_operaciones = [None] * (k + 1)
+    M_OPERACIONES[0] = 0
     
-    #Crea una tabla de n x W
-    combinaciones = [[0] * (W + 1) for _ in range(n + 1)]
-    
-    for i in range(1, n + 1):  # Itera sobre los grupos
-        for j in range(W + 1):  # Itera sobre el espacio disponible
+    for i in range(1, k + 1):
 
-            # No incluye el grupo actual
-            combinaciones[i][j] = combinaciones[i - 1][j]
+        if M_OPERACIONES[i] is None:
+            M_OPERACIONES[i] = k + 1
+        
+        # Caso 1: aumentar en 1 (mas1)
+        if M_OPERACIONES[i - 1] is not None and M_OPERACIONES[i - 1] + 1 < M_OPERACIONES[i]:
+            M_OPERACIONES[i] = M_OPERACIONES[i - 1] + 1
+            secuencia_operaciones[i] = 'mas1'
+        
+        # Caso 2: duplicar el valor (por2) si i es divisible por 2
+        if i % 2 == 0 and M_OPERACIONES[i // 2] is not None and M_OPERACIONES[i // 2] + 1 < M_OPERACIONES[i]:
+            M_OPERACIONES[i] = M_OPERACIONES[i // 2] + 1
+            secuencia_operaciones[i] = 'por2'
 
-            # Incluye el grupo actual si hay suficiente espacio
-            if j >= P[i - 1]:
-                combinaciones[i][j] = max(combinaciones[i][j], combinaciones[i - 1][j - P[i - 1]] + P[i - 1])
+    return M_OPERACIONES, secuencia_operaciones
+
     
     # Reconstruye la solución
     resultado = []
-    j = W
+    j = capacidad
     for i in range(n, 0, -1):
-        if combinaciones[i][j] != combinaciones[i - 1][j]:  # Si se incluyó el grupo
-            resultado.append(P[i - 1])  # Agrega el grupo a la solución
-            j -= P[i - 1]  # Reduce el espacio ocupado
+        if M_COMBINACIONES[i][j] != M_COMBINACIONES[i - 1][j]:  # Si se incluyó el grupo
+            resultado.append(grupo[i - 1])  # Agrega el grupo a la solución
+            j -= grupo[i - 1]  # Reduce el espacio ocupado
     
     return resultado[::-1]
 

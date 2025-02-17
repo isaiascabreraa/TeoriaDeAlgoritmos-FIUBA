@@ -24,7 +24,7 @@ def reconstruir_solucion(L, C, M, costos_obtenidos):
         ciudad_actual = 1  # California
 
     for i in range(n-1, -1, -1):
-        ciudades_seleccionadas.append("L" if ciudad_actual == 0 else "C")
+        ciudades_seleccionadas.append("londres" if ciudad_actual == 0 else "california")
         if i > 0:
 
             if ciudad_actual == 0:  # Si estamos en Londres
@@ -38,13 +38,13 @@ def reconstruir_solucion(L, C, M, costos_obtenidos):
     return ciudades_seleccionadas[::-1]
 
 
-def funcion(L, C, M):
+def plan_operativo(L, C, M):
 
-    costos_obtenidos = funcion_dinamica(L, C, M)
+    costos_obtenidos = plan_operativo_dinamico(L, C, M)
     return reconstruir_solucion(L, C, M, costos_obtenidos)
 
 
-def funcion_dinamica(L, C, M):
+def plan_operativo_dinamico(L, C, M):
 
     n = len(L)
     
@@ -66,7 +66,7 @@ def main():
     C = [5, 1, 3, 9, 2, 3, 7, 4, 9, 6, 1, 10]  # Costos en California
     M = 4  # Costo de mudanza entre ciudades
 
-    resultado = funcion(L, C, M)
+    resultado = plan_operativo(L, C, M)
     print(f"{resultado}")
 
 if __name__ == '__main__':

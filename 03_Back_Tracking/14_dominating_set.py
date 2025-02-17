@@ -1,4 +1,6 @@
 
+from lib.grafo import Grafo
+
 """
 Problema 14:
 Dado un grafo G, un Dominating Set es el subconjunto D para el cual se incluyen la minima cantidad de vertices tal que como mucho los demas vertices esten 
@@ -10,25 +12,38 @@ Resolucion: ...
 La complejidad algoritmica es del orden de: ...
 """
 
-from lib.grafo import Grafo
+def es_dominante(grafo, subconjunto, vertices):
+    for v in vertices:
+        if v in subconjunto:
+            continue
+        
+        # Si el vértice no está en el subconjunto, verificamos si está conectado a alguno de sus elementos
+        esta_cubierto = any(grafo.estan_unidos(v, u) for u in subconjunto)
+        
+        # Si no está cubierto, el subconjunto no es dominante
+        if not esta_cubierto:
+            return False
+
+    return True
 
 def dominating_set(grafo, subconjunto, subconjunto_dominante, index, vertices):
 
-    """Por cada vertice en vertices, corroboro si esta en el conjunto o si alguno de 
-    los vertices tiene algun elemento del subconjunto como adyacente"""
-    if all(v in subconjunto or any(grafo.estan_unidos(v, u) for u in subconjunto) for v in vertices):
+    if subconjunto_dominante and len(subconjunto) >= len(subconjunto_dominante):
+        return subconjunto_dominante  # Podamos ramas innecesarias si ya superamos la mejor solución conocida.
 
-        """Si llego aca es que ya tengo un candidato a subconjunto dominante"""
+    #Por cada vertice en vertices, corroboro si esta en el conjunto o si alguno de los vertices tiene algun elemento del subconjunto como adyacente.
+    if es_dominante(grafo, subconjunto, vertices):
         if not subconjunto_dominante or len(subconjunto) < len(subconjunto_dominante):
-            return subconjunto
+            return subconjunto[:]
         return subconjunto_dominante
     
     for i in range(index, len(vertices)):
         vertice_actual = vertices[i]
 
         if vertice_actual not in subconjunto:
-            nuevo_subconjunto = subconjunto + [vertice_actual]
-            subconjunto_dominante = dominating_set(grafo, nuevo_subconjunto, subconjunto_dominante, i + 1, vertices)
+            subconjunto.append(vertice_actual)
+            subconjunto_dominante = dominating_set(grafo, subconjunto, subconjunto_dominante, i + 1, vertices)
+            subconjunto.pop()
 
     return subconjunto_dominante
 

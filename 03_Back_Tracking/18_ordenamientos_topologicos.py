@@ -45,7 +45,7 @@ def contar_ordenamientos(grafo):
     vertices = grafo.obtener_vertices()
 
     for vertice in vertices:
-        if all(predecesor in visitados for predecesor in obtener_predecesores(grafo, vertice)):
+        if all(predecesor in visitados for predecesor in obtener_predecesores(grafo, vertice)): #Si todos los predecesores fueron visitados...
             visitados.add(vertice)
             contar_ordenamientos_bt(grafo, [vertice], visitados, orden_total, vertices)
             visitados.remove(vertice)

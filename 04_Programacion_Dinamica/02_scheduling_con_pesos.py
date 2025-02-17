@@ -42,9 +42,13 @@ def reconstruir_solucion(M_SCHE, charlas, valor, p, n):
     charlas_seleccionadas = []
     j = n
     while j > 0:
+
+        #Si esto pasa es porque consideré la charla.
         if M_SCHE[j] == valor[j] + M_SCHE[p[j]]:
             charlas_seleccionadas.append(charlas[j - 1])
-            j = p[j] 
+            j = p[j]
+
+        #Si no pasa es porque no la emplee a la charla.    
         
         j -= 1
     return charlas_seleccionadas[::-1]
@@ -61,6 +65,7 @@ def scheduling(charlas):
     valor = [0] * (n + 1)
 
     for i in range(n):
+        #Busco en que posicion el inicio de mi charla actual se superpone la finalizacion de alguna charla anterior.
         j = busqueda_binaria(charlas, 0, i - 1, charlas[i][0]) #Debo emplear la busqueda binaria para encontrar p para mantener la complejidad en O(n log n)
         valor[i + 1] = charlas[i][2]
         p[i + 1] = j + 1

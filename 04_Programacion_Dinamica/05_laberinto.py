@@ -1,5 +1,4 @@
 
-
 """
 Problema 05: Dado un laberinto representado por una grilla, queremos calcular la ganancia máxima que existe desde la posición (0,0) hasta la posición NxM. Los movimientos 
 permitidos son hacia abajo o hacia la derecha y se inicia desde la esquina superior izquierda (el (0,0)). Pasar por un casillero determinado (i, j) nos da una ganancia de 
