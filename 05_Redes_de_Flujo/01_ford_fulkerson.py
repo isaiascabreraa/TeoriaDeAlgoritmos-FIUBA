@@ -11,21 +11,21 @@ def forf_fulkerson(grafo, s, t):
         for w in v.adyacentes():
             flujo[(v, w)] = 0
 
-    red_residual = copiar(grafo)
+    red_residual = copiar(grafo) # type: ignore
 
-    while ((camino = obtener_camino(red_residual, s, t))) is not None:
+    while ((camino = obtener_camino(red_residual, s, t))) is not None: # type: ignore
 
-        flujo_actualizado = min_peso(grafo_residual, camino)
+        flujo_actualizado = min_peso(grafo_residual, camino) # type: ignore
 
-        for v in range(1 , len(camino)):
-
-            if grafo.hay_arista((camino[v-1],camino[v])):
-                flujo[(camino[v-1], camino[v])] += flujo_actualizado
-                actualizar_red_residual(red_residual, camino[v-1], camino[v], flujo_actualizado)
+        for v in range(1 , len(camino)): # type: ignore
+ 
+            if grafo.hay_arista((camino[v-1],camino[v])): # type: ignore
+                flujo[(camino[v-1], camino[v])] += flujo_actualizado # type: ignore
+                actualizar_red_residual(red_residual, camino[v-1], camino[v], flujo_actualizado) # type: ignore
 
             else:
-                flujo[(camino[v], camino[v-1])] -= flujo_actualizado
-                actualizar_red_residual(red_residual, camino[v-1], camino[v], flujo_actualizado) 
+                flujo[(camino[v], camino[v-1])] -= flujo_actualizado # type: ignore
+                actualizar_red_residual(red_residual, camino[v-1], camino[v], flujo_actualizado) # type: ignore
 
     return flujo
 
