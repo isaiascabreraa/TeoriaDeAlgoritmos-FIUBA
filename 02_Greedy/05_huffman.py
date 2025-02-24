@@ -21,7 +21,7 @@ Resolucion: Para resolverlo debemos:
 
 Una vez cifrado el codigo, para descifrar este codigo necesitamos el arbol de huffman y realizar el proceso inverso.
 
-Este algoritmo es greedy? Si y mi regla es "Los caracteres que menos frecuencia acumulen costaran un caracter mas". El codigo de huffman dan siempre la manera mas optima de 
+Este algoritmo es greedy? Si y mi regla es "Los caracteres que menos frecuencia acumulen costaran un caracter mas". El codigo de huffman da siempre la manera mas optima de 
 comprimir codigos siempre que cada letra sea un codigo entero (Ej: la letra A aparece 3 veces). Si quisieramos representar los caracteres como cantidades no enteras debemos usar lo 
 que se conoce como "compresiones numericas" que dan como resultado codigos donde cada letra ocupa una cantidad no entera de bits (flotante).
 """
