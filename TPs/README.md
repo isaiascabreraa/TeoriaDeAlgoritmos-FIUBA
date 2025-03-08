@@ -1,4 +1,4 @@
-# tda-tp-asinc
+# TP curso asincronico
 Este repositorio contiene la solucion al trabajo practico del curso asincronico de TDA
 
 # Ejecución
